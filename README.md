@@ -19,6 +19,7 @@ AlgoForDaSeat is a web-based solution designed to optimize student enrollment in
 
 ## **📁 Folder Structure**
 ### **Backend (`server/`)**
+```
 server/
 │── config/
 │   ├── db.js         # PostgreSQL connection
@@ -51,7 +52,7 @@ client/
 │── public/
 │── package.json           # Vue dependencies
 │── .env                   # Frontend environment variables
-
+```
 
 ---
 

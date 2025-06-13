@@ -6,7 +6,7 @@ const pool = new Pool({
   host: 'localhost',
   database: 'algofordaseat',
   password: 'DL-160_diplomat',
-  port: 5432, // ✅ Correct PostgreSQL port
+  port: 5432, //
 });
 
 pool.connect()

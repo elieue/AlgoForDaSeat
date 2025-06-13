@@ -22,5 +22,10 @@ pool.query("SELECT 1")
 // Start Server
 const PORT = process.env.PORT || 5173;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${5173}`);
+
+app.get('/', (req, res) => {
+  res.json({ message: 'Hello!' });
+});
+
 });

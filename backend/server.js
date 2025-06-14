@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
-const pool = require("./config/db"); // PostgreSQL connection
+const pool = require("./db"); // PostgreSQL connection
 
 dotenv.config();
 const app = express();
@@ -25,7 +25,7 @@ app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${5173}`);
 
 app.get('/', (req, res) => {
-  res.json({ message: 'Hello!' });
+  res.json({ message: 'Hello World!' });
 });
 
 });

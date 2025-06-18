@@ -19,40 +19,36 @@ AlgoForDaSeat is a web-based solution designed to optimize student enrollment in
 ---
 
 ## **📁 Folder Structure**
-### **Backend (`server/`)**
+
 ```
-server/
-│── config/
-│   ├── db.js         # PostgreSQL connection
-│   ├── env.js        # Environment variable setup
-│── controllers/
-│   ├── authController.js  # Handles authentication (login, register)
-│── middleware/
-│   ├── authMiddleware.js  # Protects routes using JWT
-│── models/
-│   ├── userModel.js       # Defines user schema for PostgreSQL
-│── routes/
-│   ├── authRoutes.js      # Authentication routes
-│── index.js               # Main server entry point
-│── package.json           # Dependencies
-│── .env                   # Environment variables (JWT secret, DB credentials)
-
-
-### **Frontend (`client/`)**
-client/
-│── src/
-│   ├── components/
-│   │   ├── Login.vue       # Login form
-│   │   ├── Register.vue    # Signup form
-│   ├── store/
-│   │   ├── auth.js         # Vue state management for authentication
-│   ├── router/
-│   │   ├── index.js        # Vue Router setup
-│   ├── views/
-│   │   ├── Dashboard.vue   # Protected route (requires JWT)
-│── public/
-│── package.json           # Vue dependencies
-│── .env                   # Frontend environment variables
+AlgoForDaSeat/
+├── backend/
+│   ├── controllers/
+│   │   └── authController.js
+│   ├── routes/
+│   │   └── authRoutes.js
+│   ├── db.js
+│   ├── server.js
+│   ├── .env
+│   └── package.json
+│
+├── frontend/
+│   └── client/
+│       ├── public/
+│       ├── src/
+│       │   ├── assets/
+│       │   ├── components/
+│       │   │   └── Login.vue
+│       │   ├── views/
+│       │   ├── App.vue
+│       │   ├── main.js
+│       │   └── styles.css
+│       ├── index.html
+│       ├── vite.config.js
+│       └── package.json
+│
+├── README.md
+└── .gitignore
 ```
 
 ---

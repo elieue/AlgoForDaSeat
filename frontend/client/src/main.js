@@ -2,7 +2,6 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router"; // Vue Router
 import { createPinia } from "pinia"; // Vue State Management
-import "./styles.css"; // Global CSS
 
 const app = createApp(App);
 app.use(router);

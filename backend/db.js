@@ -9,9 +9,9 @@ const pool = new Pool({
   port: 5432,
 });
 
-pool.connect()
-  .then(async () => {
-    // Create student applications table
+async function initializeDatabase() {
+  try {
+    // Create student_applications table
     await pool.query(`
       CREATE TABLE IF NOT EXISTS student_applications (
         user_id VARCHAR(20) PRIMARY KEY,
@@ -32,7 +32,7 @@ pool.connect()
       );
     `);
 
-    // Create selection table
+    // Create student_selection table
     await pool.query(`
       CREATE TABLE IF NOT EXISTS student_selection (
         applicant_id VARCHAR(20) PRIMARY KEY,
@@ -62,13 +62,19 @@ pool.connect()
           LIMIT 100
         LOOP
           IF total_passers < 10 THEN
-            INSERT INTO student_selection VALUES (student.user_id, student.entrance_exam_score, student.gpa, student.proximity_to_school_km, student.economic_status, student.weight_score, 'pass');
+            INSERT INTO student_selection VALUES (
+              student.user_id, student.entrance_exam_score, student.gpa, student.proximity_to_school_km,
+              student.economic_status, student.weight_score, 'pass');
             total_passers := total_passers + 1;
           ELSIF total_waitlist < 3 THEN
-            INSERT INTO student_selection VALUES (student.user_id, student.entrance_exam_score, student.gpa, student.proximity_to_school_km, student.economic_status, student.weight_score, 'waitlist');
+            INSERT INTO student_selection VALUES (
+              student.user_id, student.entrance_exam_score, student.gpa, student.proximity_to_school_km,
+              student.economic_status, student.weight_score, 'waitlist');
             total_waitlist := total_waitlist + 1;
           ELSE
-            INSERT INTO student_selection VALUES (student.user_id, student.entrance_exam_score, student.gpa, student.proximity_to_school_km, student.economic_status, student.weight_score, 'reject');
+            INSERT INTO student_selection VALUES (
+              student.user_id, student.entrance_exam_score, student.gpa, student.proximity_to_school_km,
+              student.economic_status, student.weight_score, 'reject');
           END IF;
         END LOOP;
       END;
@@ -76,7 +82,23 @@ pool.connect()
     `);
 
     console.log("✅ All tables and functions created successfully!");
-  })
-  .catch(err => console.error("Error creating tables", err));
+  } catch (err) {
+    console.error("❌ Error during database initialization:", err);
+  }
+}
 
-module.exports = pool;
+async function fetchStudents() {
+  try {
+    const res = await pool.query("SELECT * FROM student_applications");
+    return res.rows;
+  } catch (err) {
+    console.error("❌ Failed to fetch students:", err);
+    return [];
+  }
+}
+
+module.exports = {
+  pool,
+  fetchStudents,
+  initializeDatabase,
+};

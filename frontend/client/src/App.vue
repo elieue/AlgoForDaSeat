@@ -1,9 +1,10 @@
 <template>
   <h1>Hello from App.vue 🎉</h1>
+  <HeatMap />
 </template>
 
 <script setup>
-// Composition API ready
+import HeatMap from './ApplicationHeatmap.vue';
 </script>
 
 <style scoped>

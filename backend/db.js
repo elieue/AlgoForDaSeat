@@ -14,22 +14,25 @@ pool.connect()
     // Create student applications table
     await pool.query(`
       CREATE TABLE IF NOT EXISTS student_applications (
-        user_id VARCHAR(20) PRIMARY KEY,
-        full_name VARCHAR(100),
-        email VARCHAR(100),
-        student_id BIGINT,
-        gpa NUMERIC(4,2),
-        entrance_exam_score INTEGER,
-        address TEXT,
-        proximity_to_school_km NUMERIC(5,2),
-        parents_income NUMERIC(10,2),
-        economic_status VARCHAR(10),
-        itr_or_indigent VARCHAR(10),
-        gender VARCHAR(10),
-        ethnicity VARCHAR(30),
-        age INTEGER,
-        last_school_attended TEXT
-      );
+    user_id TEXT PRIMARY KEY,
+    full_name TEXT,
+    email TEXT,
+    student_id BIGINT,
+    gpa NUMERIC(4, 2),
+    entrance_exam_score INTEGER,
+    address TEXT,
+    proximity NUMERIC(5, 2),
+    gender TEXT,
+    ethnicity TEXT,
+    age INTEGER,
+    school_attended TEXT,
+    parent_mother TEXT,
+    parent_father TEXT,
+    parents_income INTEGER,
+    economic_status TEXT,
+    itr_or_indigent TEXT,
+    submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
     `);
 
     // Create selection table
@@ -37,10 +40,9 @@ pool.connect()
       CREATE TABLE IF NOT EXISTS student_selection (
         applicant_id VARCHAR(20) PRIMARY KEY,
         exam_score INTEGER,
-        gpa NUMERIC(4,2),
+        gpa NUMERIC(10,2),
         proximity NUMERIC(5,2),
         economic_status INTEGER,
-        weight_score NUMERIC(10,4),
         decision VARCHAR(10) CHECK (decision IN ('pass', 'waitlist', 'reject'))
       );
     `);
@@ -55,20 +57,20 @@ pool.connect()
         student RECORD;
       BEGIN
         FOR student IN 
-          SELECT user_id, entrance_exam_score, gpa, proximity_to_school_km, economic_status,
-                (entrance_exam_score * 0.4 + gpa * 0.3 + (1/proximity_to_school_km) * 0.2 + (10/economic_status) * 0.1) AS weight_score
+          SELECT user_id, entrance_exam_score, gpa, proximity, economic_status,
+                (entrance_exam_score * 0.4 + gpa * 0.3 + (1/proximity) * 0.2 + (10/economic_status) * 0.1) AS weight_score
           FROM student_applications 
           ORDER BY weight_score DESC
           LIMIT 100
         LOOP
           IF total_passers < 10 THEN
-            INSERT INTO student_selection VALUES (student.user_id, student.entrance_exam_score, student.gpa, student.proximity_to_school_km, student.economic_status, student.weight_score, 'pass');
+            INSERT INTO student_selection VALUES (student.user_id, student.entrance_exam_score, student.gpa, student.proximity, student.economic_status, student.weight_score, 'pass');
             total_passers := total_passers + 1;
           ELSIF total_waitlist < 3 THEN
-            INSERT INTO student_selection VALUES (student.user_id, student.entrance_exam_score, student.gpa, student.proximity_to_school_km, student.economic_status, student.weight_score, 'waitlist');
+            INSERT INTO student_selection VALUES (student.user_id, student.entrance_exam_score, student.gpa, student.proximity, student.economic_status, student.weight_score, 'waitlist');
             total_waitlist := total_waitlist + 1;
           ELSE
-            INSERT INTO student_selection VALUES (student.user_id, student.entrance_exam_score, student.gpa, student.proximity_to_school_km, student.economic_status, student.weight_score, 'reject');
+            INSERT INTO student_selection VALUES (student.user_id, student.entrance_exam_score, student.gpa, student.proximity, student.economic_status, student.weight_score, 'reject');
           END IF;
         END LOOP;
       END;

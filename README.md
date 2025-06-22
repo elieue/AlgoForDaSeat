@@ -2,7 +2,7 @@
 
 ### **Second Semester Final Project for Design and Analysis of Algorithms**
 Solving real-world problems using algorithms:
-Assigning students to limited slots in public schools based on proximity, performance, and social criteria is a common challenge every enrollment season.
+- Assigning students to limited slots in public schools based on proximity, performance, and social criteria is a common challenge every enrollment season.
 
 ## **Project Overview**
 AlgoForDaSeat is a web-based solution designed to optimize student enrollment in public schools based on **proximity, performance, and social criteria**. It leverages **Vue.js (frontend), Node.js (backend), PostgreSQL (database), and JWT authentication** for a full-stack implementation.
@@ -14,7 +14,6 @@ AlgoForDaSeat is a web-based solution designed to optimize student enrollment in
 - **Backend**: Node.js, Express.js
 - **Database**: PostgreSQL
 - **Authentication**: JWT
-- **Deployment**: Vercel (Frontend), Railway/Render (Backend)
 
 ---
 
@@ -62,8 +61,19 @@ AlgoForDaSeat/
 ---
 
 ## **🚀 Setup Instructions**
+git clone https://github.com/elieue/AlgoForDaSeat.git
+
 ### **1️⃣ Backend Setup**
 ```sh
-cd server
+cd backend
 npm install
 npm start
+node server.js
+```
+
+### **1️⃣ Frontend Setup**
+```sh
+cd frontend
+npm install
+npm run dev
+```

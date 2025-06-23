@@ -51,11 +51,11 @@ const emailProviders = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 
       const father = `${faker.person.firstName().replace(/'/g, "''")} ${lastName}`;
       const income = faker.number.int({ min: 50000, max: 300000 });
       const status = income < 100000 ? 'Low' : income < 200000 ? 'Middle' : 'Upper';
-      const isIndigent = status === 'Low' ? 'Indigent' : 'ITR';
+      const isIndigent = status === 'Lower' ? 'Indigent' : 'ITR';
 
       await client.query(
         `INSERT INTO student_applications(
-          user_id, full_name, email, student_id, gpa, entrance_exam_score, address, proximity,
+          applicantion_id, full_name, email, student_id, gpa, entrance_exam_score, city, proximity,
           gender, ethnicity, age, school_attended, parent_mother, parent_father, parents_income,
           economic_status, itr_or_indigent, submission_date
         ) VALUES (

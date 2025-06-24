@@ -41,6 +41,7 @@ const emailProviders = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 
 (async () => {
   try {
     const client = await pool.connect();
+    const lrnSchoolMap = {}; // ✅ Declare once, outside loop
 
     for (let i = 1; i <= 100; i++) {
       const lastName = faker.person.lastName().replace(/'/g, "''");
@@ -50,12 +51,26 @@ const emailProviders = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 
       const mother = `${faker.person.firstName().replace(/'/g, "''")} ${lastName}`;
       const father = `${faker.person.firstName().replace(/'/g, "''")} ${lastName}`;
       const income = faker.number.int({ min: 50000, max: 300000 });
-      const status = income < 100000 ? 'Low' : income < 200000 ? 'Middle' : 'Upper';
-      const isIndigent = status === 'Lower' ? 'Indigent' : 'ITR';
+      const status = income < 100000 ? 'Lower' : income < 200000 ? 'Middle' : 'Upper';
+      const isIndigent = status === 'Lower' ? 'Indigent (4ps,PhilHealth, DSWD, PWD, Solo Parent, IPs)' : 'Not Indigent (ITR)';
+
+      // Generate or reuse LRN
+      let lrn;
+      if (Math.random() < 0.2 && Object.keys(lrnSchoolMap).length > 0) {
+        const existingLrns = Object.keys(lrnSchoolMap);
+        lrn = existingLrns[Math.floor(Math.random() * existingLrns.length)];
+      } else {
+        lrn = faker.number.int({ min: 130000000000, max: 199999999999 }).toString();
+        lrnSchoolMap[lrn] = faker.helpers.arrayElement(schools);
+      }
+
+      const school = lrnSchoolMap[lrn];
+      const city = faker.helpers.arrayElement(cities);
+      const fullAddress = `${faker.location.streetAddress()}, ${city}`;
 
       await client.query(
         `INSERT INTO student_applications(
-          applicantion_id, full_name, email, student_id, gpa, entrance_exam_score, city, proximity,
+          application_id, full_name, email, lrn, gpa, entrance_exam_score, address, proximity,
           gender, ethnicity, age, school_attended, parent_mother, parent_father, parents_income,
           economic_status, itr_or_indigent, submission_date
         ) VALUES (
@@ -67,15 +82,15 @@ const emailProviders = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 
           userId,
           fullName,
           `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${faker.helpers.arrayElement(emailProviders)}`,
-          faker.number.int({ min: 130000000000, max: 199999999999 }),
-          (85 + Math.random() * 10).toFixed(2),
+          lrn,
+          Number((85 + Math.random() * 10).toFixed(2)),
           faker.number.int({ min: 80, max: 99 }),
-          faker.helpers.arrayElement(cities),
-          (3 + Math.random() * 10).toFixed(2),
+          fullAddress,
+          Number((3 + Math.random() * 10).toFixed(2)),
           faker.helpers.arrayElement(['Male', 'Female']),
           'Tagalog',
           faker.number.int({ min: 17, max: 20 }),
-          faker.helpers.arrayElement(schools),
+          school,
           mother,
           father,
           income,

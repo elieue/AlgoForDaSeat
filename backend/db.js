@@ -1,4 +1,4 @@
-const { Pool } = require("pg");
+const { Pool } = require('pg');
 require("dotenv").config();
 
 const pool = new Pool({
@@ -14,13 +14,13 @@ pool.connect()
     // Create student applications table
     await pool.query(`
       CREATE TABLE IF NOT EXISTS student_applications (
-        applicantion_id SERIAL PRIMARY KEY,
+        application_id VARCHAR(20) PRIMARY KEY,
         full_name TEXT,
         email TEXT,
-        student_id BIGINT,
+        lrn BIGINT,
         gpa NUMERIC(4, 2),
         entrance_exam_score INTEGER,
-        city TEXT,
+        address VARCHAR(80),
         proximity NUMERIC(5, 2),
         gender TEXT,
         ethnicity TEXT,
@@ -38,7 +38,7 @@ pool.connect()
     // Create selection table
     await pool.query(`
       CREATE TABLE IF NOT EXISTS student_selection (
-        user_id VARCHAR(20) REFERENCES student_applications(user_id) ON DELETE CASCADE,
+        application_id VARCHAR(20) REFERENCES student_applications(application_id) ON DELETE CASCADE,
         school_attended TEXT,
         gpa NUMERIC(10,2),
         exam_score INTEGER,
@@ -48,8 +48,8 @@ pool.connect()
 
      await pool.query(`
       CREATE TABLE IF NOT EXISTS student_rankings (
-        user_id VARCHAR(20) REFERENCES student_applications(user_id) ON DELETE CASCADE,
-         full_name TEXT,
+        application_id VARCHAR(20) REFERENCES student_applications(application_id) ON DELETE CASCADE,
+        full_name TEXT,
         email TEXT,
         student_id BIGINT,
         gpa NUMERIC(4, 2),

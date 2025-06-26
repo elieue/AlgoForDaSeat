@@ -1,0 +1,15 @@
+{
+  "name": "algofordaseatdashboard",
+  "version": "1.0.0",
+  "description": "AlgoForDaSeat Dashboard - Static Frontend",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "serve ."
+  },
+  "devDependencies": {
+    "serve": "^14.2.4",
+    "vite": "^7.0.0"
+  }
+}

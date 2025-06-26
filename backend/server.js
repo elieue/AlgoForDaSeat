@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
 const authRoutes = require("./routes/authRoutes");
-const pool = require("./db");
+const { allocateAndBuildHashTable, getStudentById } = require("./services/allocator"); // ✅ NEW
 
 dotenv.config();
 const app = express();
@@ -15,21 +15,28 @@ app.use(cors());
 // API Routes
 app.use("/api/auth", authRoutes);
 
-pool.query("SELECT 1")
-  .then(() => console.log("✅ Connected to PostgreSQL"))
-  .catch((err) => console.error("❌ Database connection error:", err));
-
-app.get("/allocate-seats", async (req, res) => {
+// ✅ API: Allocation using CSV logic and Ford-Fulkerson
+app.get("/api/allocate", async (req, res) => {
   try {
-    await pool.query("SELECT allocate_seats()");
-    const result = await pool.query("SELECT * FROM student_selection");
-    res.json(result.rows);
-  } catch (error) {
-    console.error("❌ Error allocating seats:", error);
-    res.status(500).json({ error: "Internal server error" });
+    const { admitted, waitlisted, all } = await allocateAndBuildHashTable();
+    res.json({ admitted, waitlisted, all });
+  } catch (err) {
+    console.error("❌ Allocation failed:", err);
+    res.status(500).json({ error: "Allocation failed" });
   }
 });
 
+// ✅ API: Search student by ID from hash table
+app.get("/api/student/:id", (req, res) => {
+  const student = getStudentById(req.params.id);
+  if (student) {
+    res.json(student);
+  } else {
+    res.status(404).json({ error: "Student not found" });
+  }
+});
+
+// Serve frontend (React/Vite/etc.)
 const frontendPath = path.join(__dirname, "..", "frontend", "client", "dist");
 app.use(express.static(frontendPath));
 
@@ -40,5 +47,5 @@ app.get(/^\/(?!api).*/, (req, res) => {
 // Start server
 const PORT = process.env.PORT || 5173;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${5173}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

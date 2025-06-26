@@ -1,0 +1,101 @@
+student_id,full_name,gpa,entrance_exam_score,parents_income,address,is_indigent
+STU1001,Angela Santos,91.5,89,200000,Makati City,TRUE
+STU1002,Ryan Dela Cruz,87,82,320000,Pasay City,FALSE
+STU1003,Lea Mendoza,93.2,95,180000,Manila,TRUE
+STU1004,Karen Lim,88.4,90,290000,San Juan City,FALSE
+STU1005,Miguel Reyes,85.7,78,450000,Quezon City,FALSE
+STU1006,Maria Gonzales,92.8,93,170000,Caloocan City,TRUE
+STU1007,Jose Villanueva,89.1,85,380000,Marikina City,FALSE
+STU1008,Carmen Rodriguez,94.3,97,160000,Manila,TRUE
+STU1009,Antonio Fernandez,86.2,80,410000,Makati City,FALSE
+STU1010,Isabella Ramos,90.6,88,220000,Pasig City,TRUE
+STU1011,Carlos Morales,87.9,83,350000,Taguig City,FALSE
+STU1012,Sofia Herrera,93.7,96,175000,Muntinlupa City,TRUE
+STU1013,Daniel Castro,88.5,86,300000,Las Piñas City,FALSE
+STU1014,Gabriela Torres,91.2,91,195000,Parañaque City,TRUE
+STU1015,Eduardo Jimenez,89.8,87,420000,Quezon City,FALSE
+STU1016,Valentina Ruiz,92.4,94,185000,Manila,TRUE
+STU1017,Francisco Ortega,85.3,77,480000,Makati City,FALSE
+STU1018,Camila Vargas,90.1,89,210000,San Juan City,TRUE
+STU1019,Ricardo Soto,87.6,81,360000,Mandaluyong City,FALSE
+STU1020,Natalia Guerrero,94.8,98,155000,Caloocan City,TRUE
+STU1021,Alejandro Medina,86.9,84,390000,Pasay City,FALSE
+STU1022,Valeria Romero,91.7,92,205000,Marikina City,TRUE
+STU1023,Sebastian Gutierrez,88.2,85,330000,Taguig City,FALSE
+STU1024,Lucia Diaz,93.5,95,165000,Manila,TRUE
+STU1025,Fernando Aguilar,89.4,88,400000,Quezon City,FALSE
+STU1026,Emilia Vega,90.9,90,225000,Pasig City,TRUE
+STU1027,Rodrigo Mendez,87.1,79,370000,Muntinlupa City,FALSE
+STU1028,Catalina Flores,92.6,93,190000,Las Piñas City,TRUE
+STU1029,Ignacio Herrera,85.8,82,440000,Parañaque City,FALSE
+STU1030,Esperanza Silva,91.3,91,200000,Manila,TRUE
+STU1031,Patricio Luna,88.7,86,310000,Makati City,FALSE
+STU1032,Beatriz Moreno,94.1,97,172000,Caloocan City,TRUE
+STU1033,Esteban Rivera,86.5,80,425000,San Juan City,FALSE
+STU1034,Adriana Peña,89.9,87,215000,Mandaluyong City,TRUE
+STU1035,Mateo Ramirez,87.8,83,340000,Pasay City,FALSE
+STU1036,Regina Cabrera,93,94,180000,Marikina City,TRUE
+STU1037,Joaquin Sandoval,90.5,89,395000,Taguig City,FALSE
+STU1038,Paloma Espinoza,91.8,92,208000,Quezon City,TRUE
+STU1039,Lorenzo Contreras,85.6,78,465000,Pasig City,FALSE
+STU1040,Ximena Dominguez,92.9,95,168000,Muntinlupa City,TRUE
+STU1041,Andres Gallego,88.3,84,325000,Las Piñas City,FALSE
+STU1042,Mariana Herrera,90.7,88,195000,Parañaque City,TRUE
+STU1043,Pablo Vidal,86.8,81,415000,Manila,FALSE
+STU1044,Julieta Navarro,94.5,96,162000,Makati City,TRUE
+STU1045,Raul Campos,89.2,85,380000,Caloocan City,FALSE
+STU1046,Violeta Cruz,91.4,90,230000,San Juan City,TRUE
+STU1047,Aurelio Delgado,87.3,82,355000,Mandaluyong City,FALSE
+STU1048,Dolores Ibañez,93.8,97,175000,Pasay City,TRUE
+STU1049,Norberto Paredes,85.9,79,435000,Marikina City,FALSE
+STU1050,Estrella Morales,90.2,89,218000,Taguig City,TRUE
+STU1051,Demetrio Santos,88.6,86,305000,Quezon City,FALSE
+STU1052,Remedios Garcia,92.1,93,183000,Pasig City,TRUE
+STU1053,Eliseo Martinez,86.4,80,405000,Muntinlupa City,FALSE
+STU1054,Amparo Lopez,91.9,91,212000,Las Piñas City,TRUE
+STU1055,Teodoro Gonzalez,89.7,87,345000,Parañaque City,FALSE
+STU1056,Concepcion Rodriguez,94.2,98,158000,Manila,TRUE
+STU1057,Benigno Fernandez,87,83,375000,Makati City,FALSE
+STU1058,Perpetua Morales,90.8,88,240000,Caloocan City,TRUE
+STU1059,Clemente Ramos,85.2,77,455000,San Juan City,FALSE
+STU1060,Milagros Castro,93.4,94,169000,Mandaluyong City,TRUE
+STU1061,Silverio Torres,88.9,85,335000,Pasay City,FALSE
+STU1062,Purificacion Jimenez,91.6,92,198000,Marikina City,TRUE
+STU1063,Crisanto Ruiz,86.7,81,385000,Taguig City,FALSE
+STU1064,Salvacion Ortega,92.7,95,186000,Quezon City,TRUE
+STU1065,Dionisio Vargas,89.3,86,365000,Pasig City,FALSE
+STU1066,Trinidad Soto,90.4,89,225000,Muntinlupa City,TRUE
+STU1067,Florencio Guerrero,87.5,82,320000,Las Piñas City,FALSE
+STU1068,Encarnacion Medina,93.9,96,172000,Parañaque City,TRUE
+STU1069,Apolonio Romero,85.7,78,445000,Manila,FALSE
+STU1070,Visitacion Gutierrez,91,90,205000,Makati City,TRUE
+STU1071,Herminio Diaz,88.1,84,315000,Caloocan City,FALSE
+STU1072,Presentacion Aguilar,92.3,93,188000,San Juan City,TRUE
+STU1073,Casimiro Vega,86.6,80,395000,Mandaluyong City,FALSE
+STU1074,Consolacion Mendez,90.6,88,220000,Pasay City,TRUE
+STU1075,Epifanio Flores,89,85,350000,Marikina City,FALSE
+STU1076,Pilar Silva,93.1,94,165000,Taguig City,TRUE
+STU1077,Anastacio Luna,87.4,81,425000,Quezon City,FALSE
+STU1078,Caridad Moreno,91.5,91,192000,Pasig City,TRUE
+STU1079,Policarpio Rivera,85.8,79,460000,Muntinlupa City,FALSE
+STU1080,Felicidad Peña,92.8,95,178000,Las Piñas City,TRUE
+STU1081,Nemesio Ramirez,88.4,83,340000,Parañaque City,FALSE
+STU1082,Soledad Cabrera,90.1,87,235000,Manila,TRUE
+STU1083,Marcelino Sandoval,86.2,80,375000,Makati City,FALSE
+STU1084,Esperanza Espinoza,93.6,96,160000,Caloocan City,TRUE
+STU1085,Felixberto Contreras,89.5,86,385000,San Juan City,FALSE
+STU1086,Luz Dominguez,91.2,89,210000,Mandaluyong City,TRUE
+STU1087,Gregorio Gallego,87.7,82,355000,Pasay City,FALSE
+STU1088,Fe Vidal,92.4,94,185000,Marikina City,TRUE
+STU1089,Hilario Navarro,85.1,77,440000,Taguig City,FALSE
+STU1090,Esperanza Campos,90.9,90,215000,Quezon City,TRUE
+STU1091,Primitivo Cruz,88.8,85,320000,Pasig City,FALSE
+STU1092,Gracia Delgado,93.3,95,175000,Muntinlupa City,TRUE
+STU1093,Eusebio Ibañez,86.9,81,405000,Las Piñas City,FALSE
+STU1094,Caridad Paredes,91.7,92,188000,Parañaque City,TRUE
+STU1095,Venancio Morales,89.6,87,365000,Manila,FALSE
+STU1096,Paz Santos,92,93,200000,Makati City,TRUE
+STU1097,Saturnino Garcia,87.2,83,390000,Caloocan City,FALSE
+STU1098,Lourdes Martinez,90.3,88,225000,San Juan City,TRUE
+STU1099,Simplicio Lopez,85.4,78,475000,Mandaluyong City,FALSE
+STU1100,Gloria Gonzalez,94.7,97,155000,Pasay City,TRUE

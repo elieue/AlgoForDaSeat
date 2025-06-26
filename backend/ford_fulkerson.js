@@ -1,54 +1,5 @@
 const { Pool } = require('pg');
-
-class Graph {
-  constructor(vertices) {
-    this.V = vertices;
-    this.adj = Array.from({ length: vertices }, () => Array(vertices).fill(0));
-  }
-
-  bfs(s, t, parent) {
-    const visited = Array(this.V).fill(false);
-    const queue = [s];
-    visited[s] = true;
-    parent[s] = -1;
-
-    while (queue.length) {
-      const u = queue.shift();
-      for (let v = 0; v < this.V; v++) {
-        if (!visited[v] && this.adj[u][v] > 0) {
-          queue.push(v);
-          parent[v] = u;
-          visited[v] = true;
-        }
-      }
-    }
-
-    return visited[t];
-  }
-
-  fordFulkerson(source, sink) {
-    const parent = Array(this.V).fill(-1);
-    let maxFlow = 0;
-
-    while (this.bfs(source, sink, parent)) {
-      let pathFlow = Infinity;
-      for (let v = sink; v !== source; v = parent[v]) {
-        const u = parent[v];
-        pathFlow = Math.min(pathFlow, this.adj[u][v]);
-      }
-
-      for (let v = sink; v !== source; v = parent[v]) {
-        const u = parent[v];
-        this.adj[u][v] -= pathFlow;
-        this.adj[v][u] += pathFlow;
-      }
-
-      maxFlow += pathFlow;
-    }
-
-    return maxFlow;
-  }
-}
+const { faker } = require('@faker-js/faker');
 
 const pool = new Pool({
   user: 'postgres',
@@ -60,8 +11,22 @@ const pool = new Pool({
 
 const NEAR_MANILA_CITIES = [
   'Pasay City', 'Makati City', 'San Juan City', 'Mandaluyong City',
-  'Caloocan City', 'Navotas City', 'Manila'
+  'Caloocan City', 'Navotas City', 'Manila',
 ];
+
+const schools = [
+  'Manila Science High School', 'Quezon City Science High School', 'Pasig City Science High School',
+  'Taguig Science High School', 'Makati Science High School', 'Marikina Science High School',
+  'San Juan City National Science High School', 'Las Piñas City National Senior High School',
+  'Navotas National High School', 'Caloocan National Science and Technology High School',
+  'Mandaluyong High School', 'Malabon National High School',
+  'Valenzuela City School of Mathematics and Science', 'Parañaque National High School',
+  'Jose Abad Santos High School', 'Ramon Magsaysay High School', 'Manuel A. Roxas High School',
+  'Victorino Mapa High School', 'Timoteo Paez Integrated High School', 'Lagro High School'
+];
+
+const ADMIT_SLOTS = 10;
+const WAITLIST_SLOTS = 5;
 
 function computeScore({ gpa, exam, income, isIndigent, isNear }) {
   const gpaPts = (gpa / 100) * 30;
@@ -70,90 +35,146 @@ function computeScore({ gpa, exam, income, isIndigent, isNear }) {
   const indigentPts = isIndigent ? 10 : 0;
   const proximityPts = isNear ? 10 : 0;
   const total = gpaPts + examPts + incomePts + indigentPts + proximityPts;
-  return +total.toFixed(2);
+  return {
+    gpaPts: +gpaPts.toFixed(2),
+    examPts: +examPts.toFixed(2),
+    incomePts: +incomePts.toFixed(2),
+    indigentPts,
+    proximityPts,
+    total: +total.toFixed(2),
+  };
+}
+
+function buildFlowNetwork(students, capacities) {
+  const nodeIndex = {};
+  let idx = 0;
+  const source = idx++;
+  students.forEach(s => nodeIndex[s.id] = idx++);
+  schools.forEach(s => nodeIndex[s] = idx++);
+  const sink = idx++;
+  const edges = [];
+
+  function addEdge(from, to, capacity) {
+    edges.push({ from, to, capacity, flow: 0 });
+  }
+
+  students.forEach(s => {
+    addEdge(source, nodeIndex[s.id], 1);
+    s.preferences.forEach(pref => {
+      addEdge(nodeIndex[s.id], nodeIndex[pref], 1);
+    });
+  });
+
+  schools.forEach(s => addEdge(nodeIndex[s], sink, capacities[s]));
+
+  const graph = Array.from({ length: idx }, () => []);
+  edges.forEach(({ from, to, capacity }) => {
+    const forward = { to, capacity, flow: 0 };
+    const backward = { to: from, capacity: 0, flow: 0 };
+    forward.rev = backward;
+    backward.rev = forward;
+    graph[from].push(forward);
+    graph[to].push(backward);
+  });
+
+  return { graph, source, sink, nodeIndex };
+}
+
+function bfs(graph, source, sink, parent) {
+  const visited = new Array(graph.length).fill(false);
+  const queue = [source];
+  visited[source] = true;
+  while (queue.length > 0) {
+    const u = queue.shift();
+    for (const edge of graph[u]) {
+      if (!visited[edge.to] && edge.capacity - edge.flow > 0) {
+        parent[edge.to] = { u, edge };
+        if (edge.to === sink) return true;
+        visited[edge.to] = true;
+        queue.push(edge.to);
+      }
+    }
+  }
+  return false;
+}
+
+function fordFulkerson(graph, source, sink) {
+  let flow = 0;
+  const parent = new Array(graph.length);
+  while (bfs(graph, source, sink, parent)) {
+    let pathFlow = Infinity;
+    for (let v = sink; v !== source; v = parent[v].u) {
+      const edge = parent[v].edge;
+      pathFlow = Math.min(pathFlow, edge.capacity - edge.flow);
+    }
+    for (let v = sink; v !== source; v = parent[v].u) {
+      parent[v].edge.flow += pathFlow;
+      parent[v].edge.rev.flow -= pathFlow;
+    }
+    flow += pathFlow;
+  }
+  return flow;
 }
 
 (async () => {
   const client = await pool.connect();
   try {
     const res = await client.query(`
-      SELECT application_id, full_name, gpa, entrance_exam_score, parents_income, itr_or_indigent, address
+      SELECT application_id, full_name, gpa, entrance_exam_score, address, parents_income, itr_or_indigent
       FROM student_applications
+      LIMIT 100
     `);
 
-    let students = res.rows.map((s, i) => {
+    const students = res.rows.map((s, i) => {
       const gpa = parseFloat(s.gpa);
       const exam = parseFloat(s.entrance_exam_score);
       const income = parseFloat(s.parents_income);
       const isIndigent = s.itr_or_indigent?.toLowerCase().includes('indigent');
       const isNear = NEAR_MANILA_CITIES.some(city => s.address.includes(city));
-      const totalScore = computeScore({ gpa, exam, income, isIndigent, isNear });
-
+      const score = computeScore({ gpa, exam, income, isIndigent, isNear });
       return {
-        id: i,
+        id: `S${i + 1}`,
         full_name: s.full_name,
-        totalScore
+        income,
+        preferences: faker.helpers.arrayElements(schools, 3),
+        score,
       };
     });
 
-    // Step 1: Sort by score descending
-    students.sort((a, b) => b.totalScore - a.totalScore);
+    students.sort((a, b) => b.score.total - a.score.total);
 
-    // Step 2: Keep only top 15 for admission + waitlist
-    const topStudents = students.slice(0, 15);
+    const schoolCapacities = {};
+    schools.forEach(s => schoolCapacities[s] = faker.number.int({ min: 2, max: 10 }));
 
-    // Step 3: Assign percentiles for display
-    const N = topStudents.length;
-    topStudents.forEach((s, i) => {
-      s.percentile = Math.round(100 * (N - i - 1) / (N - 1));
-    });
+    const { graph, source, sink, nodeIndex } = buildFlowNetwork(students, schoolCapacities);
+    fordFulkerson(graph, source, sink);
 
-    // Graph setup
-    const n = topStudents.length;
-    const totalVertices = 2 + n + 3; // Source + Sink + students + admitPool + waitlistPool
-    const S = 0;
-    const T = totalVertices - 1;
-    const admitPool = totalVertices - 3;
-    const waitlistPool = totalVertices - 2;
+    const allocations = [];
+    for (const s of students) {
+      const edges = graph[nodeIndex[s.id]];
+      const matched = edges.find(e => e.flow === 1);
+      if (matched) {
+        const school = Object.keys(nodeIndex).find(key => nodeIndex[key] === matched.to);
+        allocations.push({ ...s, assigned: school });
+      }
+    }
 
-    const g = new Graph(totalVertices);
+    const admitted = allocations.slice(0, ADMIT_SLOTS);
+    const waitlisted = allocations.slice(ADMIT_SLOTS, ADMIT_SLOTS + WAITLIST_SLOTS);
 
-    // S -> Students
-    topStudents.forEach((_, i) => g.adj[S][i + 1] = 1);
+    const printList = (label, list) => {
+      console.log(`\n${label}`);
+      list.forEach((s, i) => {
+        console.log(`${i + 1}. ${s.full_name} → ${s.assigned}`);
+        console.log(`   Score: ${s.score.total} | GPA: ${s.score.gpaPts}, Exam: ${s.score.examPts}`);
+        console.log(`   Raw Income: ₱${s.income.toLocaleString()} | Income Score: +${s.score.incomePts.toFixed(2)}, Indigent: +${s.score.indigentPts}, Proximity: +${s.score.proximityPts}`);
+      });
+    };
 
-    // Students -> Admit pool or waitlist pool
-    topStudents.forEach((_, i) => {
-      const sid = i + 1;
-      g.adj[sid][admitPool] = 1;
-      g.adj[sid][waitlistPool] = 1;
-    });
+    printList('🎓 ADMITTED STUDENTS', admitted);
+    printList('📝 WAITLISTED STUDENTS', waitlisted);
+    console.log(`\n✅ Total matched: ${allocations.length} out of ${students.length}`);
 
-    // Admit pool -> Sink (limit 10 admits)
-    g.adj[admitPool][T] = 10;
-
-    // Waitlist pool -> Sink (limit 5 waitlists)
-    g.adj[waitlistPool][T] = 5;
-
-    const maxFlow = g.fordFulkerson(S, T);
-
-    // Select top 10 admitted and next 5 waitlisted
-    const admitted = topStudents.slice(0, 10);
-    const waitlisted = topStudents.slice(10, 15);
-
-    // Output
-    console.log(`\n🎯 Max flow (admitted + waitlist): ${maxFlow}`);
-    console.log(`🧑‍🎓 Admission offers: ${admitted.length}`);
-    console.log(`📝 Waitlisted: ${waitlisted.length}`);
-
-    console.log('\n🎓 ADMITTED OFFERS:');
-    admitted.forEach((s, i) =>
-      console.log(`${i + 1}. ${s.full_name} — Score: ${s.totalScore} — 🎯 Percentile: ${s.percentile}%`)
-    );
-
-    console.log('\n📝 WAITLISTED:');
-    waitlisted.forEach((s, i) =>
-      console.log(`${i + 1}. ${s.full_name} — Score: ${s.totalScore} — 🎯 Percentile: ${s.percentile}%`)
-    );
   } catch (err) {
     console.error('❌ Error:', err);
   } finally {

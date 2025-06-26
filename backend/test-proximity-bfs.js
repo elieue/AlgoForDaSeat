@@ -2,7 +2,7 @@
 const {
   getCityDistanceBFS,
   parseCityFromAddress,
-  calculateProximityGrade,
+   ProximityPts,
 } = require('./proximity-bfs.js');
 
 const students = [
@@ -20,7 +20,7 @@ const results = students.map((s) => {
   const city = parseCityFromAddress(s.address);
   const hops = getCityDistanceBFS(REFERENCE_CITY, city);
 
-  const grade = calculateProximityGrade(hops); 
+  const grade = ProximityPts(hops); 
 
   return {
     name: s.name,

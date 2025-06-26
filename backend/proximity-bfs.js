@@ -64,7 +64,7 @@ function parseCityFromAddress(address) {
     return null;
 }
 
-function calculateProximityGrade(distance) {
+function ProximityPts(distance) {
     if (distance === Infinity) {
         return 0;
     }
@@ -78,6 +78,6 @@ function calculateProximityGrade(distance) {
 module.exports = {
     getCityDistanceBFS,
     parseCityFromAddress,
-    calculateProximityGrade, 
+    ProximityPts, 
     CITY_ADJACENCY
 };

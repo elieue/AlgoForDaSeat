@@ -54,10 +54,16 @@ class StudentHashTable {
   }
 
   display() {
-    this.values().forEach((val, i) => {
-      console.log(`${i + 1}. ${val.application_id} - ${val.full_name}`);
-    });
-  }
+  console.log("\n🔍 Hash Table Buckets:");
+  this.table.forEach((bucket, index) => {
+    if (bucket && bucket.length > 0) {
+      console.log(`\n[Index ${index}]`);
+      bucket.forEach(([key, value]) => {
+        console.log(` → Key: ${key}, Name: ${value.full_name}, ID: ${value.application_id}`);
+      });
+    }
+  });
+}
 }
 
 module.exports = { StudentHashTable };

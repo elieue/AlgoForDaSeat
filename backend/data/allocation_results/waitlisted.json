@@ -1,0 +1,102 @@
+[
+  {
+    "id": "STU002",
+    "full_name": "Gunner Hoppe",
+    "gpa": 93.01,
+    "exam": 89,
+    "income": 88994,
+    "isIndigent": true,
+    "address": "62184 Deborah Trafficway, Navotas City",
+    "score": {
+      "gpaPts": 27.9,
+      "examPts": 35.6,
+      "incomePts": 14.07,
+      "indigentPts": 10,
+      "proximityPts": 8,
+      "total": 95.57
+    },
+    "total": 95.57,
+    "status": "waitlisted",
+    "rank": 11
+  },
+  {
+    "id": "STU091",
+    "full_name": "Carrie Bartoletti",
+    "gpa": 93.85,
+    "exam": 93,
+    "income": 124734,
+    "isIndigent": true,
+    "address": "1668 Fore Street, Quezon City",
+    "score": {
+      "gpaPts": 28.15,
+      "examPts": 37.2,
+      "incomePts": 11.68,
+      "indigentPts": 10,
+      "proximityPts": 8,
+      "total": 95.04
+    },
+    "total": 95.04,
+    "status": "waitlisted",
+    "rank": 12
+  },
+  {
+    "id": "STU062",
+    "full_name": "Helena Turcotte",
+    "gpa": 94.28,
+    "exam": 98,
+    "income": 156788,
+    "isIndigent": true,
+    "address": "5506 Eusebio Coves, Navotas City",
+    "score": {
+      "gpaPts": 28.28,
+      "examPts": 39.2,
+      "incomePts": 9.55,
+      "indigentPts": 10,
+      "proximityPts": 8,
+      "total": 95.03
+    },
+    "total": 95.03,
+    "status": "waitlisted",
+    "rank": 13
+  },
+  {
+    "id": "STU058",
+    "full_name": "Okey Jakubowski",
+    "gpa": 90.7,
+    "exam": 93,
+    "income": 78989,
+    "isIndigent": true,
+    "address": "503 Moen Passage, Malabon City",
+    "score": {
+      "gpaPts": 27.21,
+      "examPts": 37.2,
+      "incomePts": 14.73,
+      "indigentPts": 10,
+      "proximityPts": 6,
+      "total": 95.14
+    },
+    "total": 95.14,
+    "status": "waitlisted",
+    "rank": 14
+  },
+  {
+    "id": "STU039",
+    "full_name": "Diego Kiehn",
+    "gpa": 90.07,
+    "exam": 94,
+    "income": 62224,
+    "isIndigent": true,
+    "address": "56182 13th Street, Las Piñas City",
+    "score": {
+      "gpaPts": 27.02,
+      "examPts": 37.6,
+      "incomePts": 15.85,
+      "indigentPts": 10,
+      "proximityPts": 4,
+      "total": 94.47
+    },
+    "total": 94.47,
+    "status": "waitlisted",
+    "rank": 15
+  }
+]

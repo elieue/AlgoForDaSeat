@@ -3,48 +3,82 @@
     <div class="rankings-page figma-yellow-bg">
       <div class="rankings-header">
         <h1 class="page-title figma-black figma-bold">Application Rankings</h1>
-        <button class="process-btn" :disabled="loading" @click="onProcessRankings" aria-label="Process Rankings">
+        <button class="process-btn" :disabled="localLoading" @click="onProcessRankings" aria-label="Process Rankings">
           <img src="../../Assets/process-ranking-logo.svg" class="btn-icon" alt="Process" />
-          <span v-if="!loading">Process Rankings</span>
+          <span v-if="!localLoading">Process Rankings</span>
           <span v-else class="spinner"></span>
         </button>
       </div>
-      <p class="page-desc" style="color:#555;">Review processed rankings for approved students and manage enrollment decisions.</p>
-      <transition name="fade-slide">
-        <div v-if="alertUnranked" class="unranked-alert">
-          <img src="../../Assets/ranking-logo.svg" class="alert-icon" alt="Unranked" />
-          <div>
-            <b class="figma-orange figma-bold">Unranked Applications</b><br />
-            <span style="color:#555;">There are {{ unrankedCount }} application(s) that have not been ranked yet (typically 'Pending' status). Click "Process Rankings" to process them. This page will then display approved applications based on these rankings.</span>
+      <p class="page-desc" style="color:#555;">Review processed rankings for approved and waitlisted students. This page shows the ranking results after processing applications.</p>
+      
+      <!-- Initial Loading State -->
+      <div v-if="loading" class="loading-state">
+        <div class="loading-spinner"></div>
+        <p>Loading applications...</p>
+      </div>
+      
+      <!-- Error State -->
+      <div v-else-if="error" class="error-state">
+        <p class="error-message">{{ error }}</p>
+        <button @click="loadData" class="retry-btn">Retry</button>
+      </div>
+      
+      <!-- Main Content -->
+      <div v-else>
+        <transition name="fade-slide">
+          <div v-if="alertUnranked" class="unranked-alert">
+            <img src="../../Assets/ranking-logo.svg" class="alert-icon" alt="Unranked" />
+            <div>
+              <b class="figma-orange figma-bold">Unranked Applications</b><br />
+              <span style="color:#555;">There are {{ unrankedCount }} application(s) that have not been ranked yet (typically 'Pending' status). Click "Process Rankings" to process them. This page will then display approved applications based on these rankings.</span>
+            </div>
           </div>
+        </transition>
+        <transition name="fade-slide">
+          <template v-if="!localLoading">
+            <div v-if="localError" class="error-toast figma-shadow" aria-live="assertive" style="color:#b71c1c; background:#ffebee; border:1.5px solid #ffcdd2;">{{ localError }}</div>
+            <div v-else-if="approvedRankings.length === 0 && waitlistedRankings.length === 0" class="empty-state" aria-live="polite">
+              <img src="../../Assets/ranking-logo.svg" class="empty-icon" alt="No Rankings" />
+              <h2 class="empty-title">No applications have been ranked yet.</h2>
+              <p class="empty-desc">Run <b>Process Rankings</b> to rank applications and categorize them into approved, waitlisted, and rejected.</p>
+            </div>
+            <div v-else>
+              <!-- Approved Rankings Section -->
+              <div v-if="approvedRankings.length > 0" class="card rankings-card figma-shadow" style="background:#fff; border-radius:24px; padding:32px; margin-bottom: 24px;">
+                <div class="card-header" style="padding:0 0 8px 0;">
+                  <span class="card-title figma-black figma-bold" style="font-size:1.25rem;display:flex;align-items:center;gap:10px;">
+                    <img src="../../Assets/approved-applications-logo.svg" class="card-icon figma-orange" alt="Approved Rankings" style="width:28px;height:28px;" />
+                    Ranked Approved Applications <span class="count figma-orange figma-bold">({{ approvedRankings.length }})</span>
+                  </span>
+                  <span class="card-sub" style="color:#555; font-size:1rem; margin-top:2px;">Approved student applications, ranked based on multiple criteria including academic performance, proximity, and socioeconomic status. Lower rank indicates higher priority.</span>
+                </div>
+                <div class="table-scroll" style="overflow-x:auto;">
+                  <ApplicationRankingsTable :applications="approvedRankings" @view="goToApplicantProfile" />
+                </div>
+                <div class="footer-row" v-if="approvedRankings.length" style="color:#888; font-size:1.02rem; padding:16px 0 0 0;">Showing {{ approvedRankings.length }} approved and ranked application(s).</div>
+              </div>
+
+              <!-- Waitlisted Rankings Section -->
+              <div v-if="waitlistedRankings.length > 0" class="card rankings-card figma-shadow" style="background:#fff; border-radius:24px; padding:32px;">
+                <div class="card-header" style="padding:0 0 8px 0;">
+                  <span class="card-title figma-black figma-bold" style="font-size:1.25rem;display:flex;align-items:center;gap:10px;">
+                    <img src="../../Assets/waitlisted-applications-logo.svg" class="card-icon figma-orange" alt="Waitlisted Rankings" style="width:28px;height:28px;" />
+                    Ranked Waitlisted Applications <span class="count figma-orange figma-bold">({{ waitlistedRankings.length }})</span>
+                  </span>
+                  <span class="card-sub" style="color:#555; font-size:1rem; margin-top:2px;">Waitlisted student applications, ranked based on multiple criteria. These students are qualified but are currently on the waitlist due to slot limitations.</span>
+                </div>
+                <div class="table-scroll" style="overflow-x:auto;">
+                  <ApplicationRankingsTable :applications="waitlistedRankings" @view="goToApplicantProfile" />
+                </div>
+                <div class="footer-row" v-if="waitlistedRankings.length" style="color:#888; font-size:1.02rem; padding:16px 0 0 0;">Showing {{ waitlistedRankings.length }} waitlisted and ranked application(s).</div>
+              </div>
+            </div>
+          </template>
+        </transition>
+        <div v-if="localLoading" class="skeleton-loader figma-shadow" style="margin-top:32px;display:flex;flex-direction:column;gap:18px;">
+          <div class="skeleton-card" style="height:64px;width:100%;background:#f5f5f5;border-radius:24px;"></div>
+          <div class="skeleton-table" style="height:220px;width:100%;background:#f5f5f5;border-radius:24px;"></div>
         </div>
-      </transition>
-      <transition name="fade-slide">
-        <template v-if="!loading">
-          <div v-if="error" class="error-toast figma-shadow" aria-live="assertive" style="color:#b71c1c; background:#ffebee; border:1.5px solid #ffcdd2;">{{ error }}</div>
-          <div v-else-if="approvedRankings.length === 0" class="empty-state" aria-live="polite">
-            <img src="../../Assets/ranking-logo.svg" class="empty-icon" alt="No Rankings" />
-            <h2 class="empty-title">No approved applications have been ranked yet, or no applications are currently approved.</h2>
-            <p class="empty-desc">Run <b>Process Rankings</b> if there are unranked applications, then approve applications to see them here.</p>
-          </div>
-          <div v-else class="card rankings-card figma-shadow" style="background:#fff; border-radius:24px; padding:32px;">
-            <div class="card-header" style="padding:0 0 8px 0;">
-              <span class="card-title figma-black figma-bold" style="font-size:1.25rem;display:flex;align-items:center;gap:10px;">
-                <img src="../../Assets/application-ranking-logo.svg" class="card-icon figma-orange" alt="Rankings" style="width:28px;height:28px;" />
-                Ranked Approved Applications <span class="count figma-orange figma-bold">({{ approvedRankings.length }})</span>
-              </span>
-              <span class="card-sub" style="color:#555; font-size:1rem; margin-top:2px;">This page displays <b>approved</b> student applications, ranked based on multiple criteria including academic performance, proximity, and socioeconomic status. This ranking helps determine eligibility for the available slots. Lower rank indicates higher priority.</span>
-            </div>
-            <div class="table-scroll" style="overflow-x:auto;">
-              <ApplicationRankingsTable :applications="approvedRankings" @view="goToApplicantProfile" />
-            </div>
-            <div class="footer-row" v-if="approvedRankings.length" style="color:#888; font-size:1.02rem; padding:16px 0 0 0;">Showing {{ approvedRankings.length }} approved and ranked application(s). The top 50 are considered high priority for enrollment.</div>
-          </div>
-        </template>
-      </transition>
-      <div v-if="loading" class="skeleton-loader figma-shadow" style="margin-top:32px;display:flex;flex-direction:column;gap:18px;">
-        <div class="skeleton-card" style="height:64px;width:100%;background:#f5f5f5;border-radius:24px;"></div>
-        <div class="skeleton-table" style="height:220px;width:100%;background:#f5f5f5;border-radius:24px;"></div>
       </div>
     </div>
   </transition>
@@ -56,73 +90,69 @@ import { storeToRefs } from 'pinia';
 import ApplicationRankingsTable from './components/ApplicationRankingsTable.vue';
 import { useApplicationsStore } from '../store/applications.js';
 import { useRouter } from 'vue-router';
+import applicationsAPI from '../api/applications.js';
 
 const applicationsStore = useApplicationsStore();
-const { pending, approved, rankings } = storeToRefs(applicationsStore);
+const { pending, approved, rankings, loading, error } = storeToRefs(applicationsStore);
 
-const loading = ref(false);
-const error = ref(null);
+const localLoading = ref(false);
+const localError = ref(null);
 
 // Computed properties
 const unrankedCount = computed(() => pending.value.length);
 const alertUnranked = computed(() => unrankedCount.value > 0);
 
-// Filter rankings to only show approved applications
+// Filter rankings to show both approved and waitlisted applications with rankings
 const approvedRankings = computed(() => {
-  return rankings.value.filter(ranking => ranking.status === 'approved');
+  return rankings.value
+    .filter(ranking => ranking.status === 'admitted')
+    .sort((a, b) => a.rank - b.rank);
+});
+
+const waitlistedRankings = computed(() => {
+  return rankings.value
+    .filter(ranking => ranking.status === 'waitlisted')
+    .sort((a, b) => a.rank - b.rank);
+
 });
 
 const router = useRouter();
 
 async function onProcessRankings() {
-  loading.value = true;
-  error.value = null;
-  
+  localLoading.value = true;
+  localError.value = null;
   try {
-    // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 1200));
+    // Call backend allocation endpoint
+    const result = await applicationsAPI.allocateSlots();
+    console.log('Allocations:', result.allocations);
     
-    // Get all applications (pending, waitlisted, approved, rejected)
-    const allApplications = [
-      ...pending.value,
-      ...applicationsStore.waitlisted,
-      ...approved.value,
-      ...applicationsStore.rejected
-    ];
+    // Reload all applications to get updated data
+    await applicationsStore.loadAllApplications();
     
-    if (allApplications.length === 0) {
-      error.value = 'No applications found to process.';
-      return;
+    if (result.allocations && result.allocations.length > 0) {
+      // Process rankings for both admitted and waitlisted students
+      const processedRankings = result.allocations
+        .filter(app => app.status === 'admitted' || app.status === 'waitlisted')
+        .sort((a, b) => a.rank - b.rank)
+        .map((app, index) => ({
+          id: app.id,
+          fullName: app.full_name,
+          grades: app.gpa,
+          examScore: app.exam,
+          monthlyIncome: app.income,
+          status: app.status,
+          assigned: app.assigned,
+          rank: app.rank,
+          compositeScore: app.total || (app.score && app.score.total),
+          eligibility: app.status === 'admitted' ? 'High Priority' : 'Waitlisted',
+        }));
+      applicationsStore.setRankings(processedRankings);
     }
-    
-    // Process rankings based on multiple criteria
-    const processedRankings = allApplications
-      .map(app => ({
-        id: app.id,
-        lrn: app.lrn,
-        fullName: app.fullName,
-        grades: app.grades,
-        examScore: app.examScore,
-        proximity: app.proximity,
-        monthlyIncome: app.monthlyIncome,
-        status: app.status,
-        // Calculate composite score (higher is better)
-        compositeScore: (app.grades * 0.4) + (app.examScore * 0.3) + (10 - app.proximity) * 0.2 + (50000 - app.monthlyIncome) * 0.1
-      }))
-      .sort((a, b) => b.compositeScore - a.compositeScore)
-      .map((app, index) => ({
-        ...app,
-        rank: index + 1,
-        eligibility: index < 50 ? 'High Priority' : 'Standard Priority'
-      }));
-    
-    // Update the store with processed rankings
-    applicationsStore.setRankings(processedRankings);
-    
   } catch (e) {
-    error.value = 'Failed to process rankings. Please try again.';
+    localError.value = 'Failed to process rankings. Please try again.';
   } finally {
-    loading.value = false;
+    localLoading.value = false;
+
   }
 }
 
@@ -130,9 +160,13 @@ function goToApplicantProfile(app) {
   router.push(`/admin/applicant-profile/${app.id || app.lrn}`);
 }
 
+async function loadData() {
+  await applicationsStore.loadAllApplications();
+}
+
 onMounted(() => {
-  // No need to fetch data since we're using the store
-  // The store is already populated with the data
+  loadData();
+
 });
 </script>
 
@@ -385,5 +419,58 @@ onMounted(() => {
 @keyframes pulse {
   0% { opacity: 1; }
   100% { opacity: 0.6; }
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 16px;
+  padding: 48px 0;
+  margin-top: 8px;
+  text-align: center;
+}
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #f7a600;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 2px dashed #ffcdd2;
+  border-radius: 16px;
+  padding: 48px 0;
+  margin-top: 8px;
+  text-align: center;
+}
+.error-message {
+  font-family: 'Inter', sans-serif;
+  color: #d32f2f;
+  font-size: 1rem;
+  margin-bottom: 16px;
+}
+.retry-btn {
+  background: #f7a600;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.retry-btn:hover {
+  background: #e69500;
 }
 </style> 

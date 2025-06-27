@@ -116,69 +116,27 @@ function fordFulkerson(graph, source, sink) {
   return flow;
 }
 
-(async () => {
-  const client = await pool.connect();
-  try {
-    const res = await client.query(`
-      SELECT application_id, full_name, gpa, entrance_exam_score, address, parents_income, itr_or_indigent
-      FROM student_applications
-      LIMIT 100
-    `);
+function allocateSlotsFordFulkerson(students, schoolCapacities) {
+  // students: [{id, full_name, preferences: [school1, school2, ...], score: {total, ...}}]
+  // schoolCapacities: { [schoolName]: number }
+  const { graph, source, sink, nodeIndex } = buildFlowNetwork(students, schoolCapacities);
+  fordFulkerson(graph, source, sink);
 
-    const students = res.rows.map((s, i) => {
-      const gpa = parseFloat(s.gpa);
-      const exam = parseFloat(s.entrance_exam_score);
-      const income = parseFloat(s.parents_income);
-      const isIndigent = s.itr_or_indigent?.toLowerCase().includes('indigent');
-      const isNear = NEAR_MANILA_CITIES.some(city => s.address.includes(city));
-      const score = computeScore({ gpa, exam, income, isIndigent, isNear });
-      return {
-        id: `S${i + 1}`,
-        full_name: s.full_name,
-        income,
-        preferences: faker.helpers.arrayElements(schools, 3),
-        score,
-      };
-    });
-
-    students.sort((a, b) => b.score.total - a.score.total);
-
-    const schoolCapacities = {};
-    schools.forEach(s => schoolCapacities[s] = faker.number.int({ min: 2, max: 10 }));
-
-    const { graph, source, sink, nodeIndex } = buildFlowNetwork(students, schoolCapacities);
-    fordFulkerson(graph, source, sink);
-
-    const allocations = [];
-    for (const s of students) {
-      const edges = graph[nodeIndex[s.id]];
-      const matched = edges.find(e => e.flow === 1);
-      if (matched) {
-        const school = Object.keys(nodeIndex).find(key => nodeIndex[key] === matched.to);
-        allocations.push({ ...s, assigned: school });
-      }
+  const allocations = [];
+  for (const s of students) {
+    const edges = graph[nodeIndex[s.id]];
+    const matched = edges.find(e => e.flow === 1);
+    if (matched) {
+      const school = Object.keys(nodeIndex).find(key => nodeIndex[key] === matched.to);
+      allocations.push({ ...s, assigned: school });
     }
-
-    const admitted = allocations.slice(0, ADMIT_SLOTS);
-    const waitlisted = allocations.slice(ADMIT_SLOTS, ADMIT_SLOTS + WAITLIST_SLOTS);
-
-    const printList = (label, list) => {
-      console.log(`\n${label}`);
-      list.forEach((s, i) => {
-        console.log(`${i + 1}. ${s.full_name} → ${s.assigned}`);
-        console.log(`   Score: ${s.score.total} | GPA: ${s.score.gpaPts}, Exam: ${s.score.examPts}`);
-        console.log(`   Raw Income: ₱${s.income.toLocaleString()} | Income Score: +${s.score.incomePts.toFixed(2)}, Indigent: +${s.score.indigentPts}, Proximity: +${s.score.proximityPts}`);
-      });
-    };
-
-    printList('🎓 ADMITTED STUDENTS', admitted);
-    printList('📝 WAITLISTED STUDENTS', waitlisted);
-    console.log(`\n✅ Total matched: ${allocations.length} out of ${students.length}`);
-
-  } catch (err) {
-    console.error('❌ Error:', err);
-  } finally {
-    client.release();
-    await pool.end();
   }
-})();
+  return allocations;
+}
+
+module.exports = {
+  computeScore,
+  allocateSlotsFordFulkerson,
+  schools,
+  NEAR_MANILA_CITIES
+};

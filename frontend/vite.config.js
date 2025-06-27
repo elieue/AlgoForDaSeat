@@ -9,12 +9,5 @@ export default defineConfig({
       '/api': 'http://localhost:3000',
     },
   },
-  root: '.',
-  build: {
-    rollupOptions: {
-      input: {
-        main: './index-test.html'
-      }
-    }
-  }
+  root: '.'
 });

@@ -40,9 +40,10 @@
   transition: background-color 0.2s cubic-bezier(.4,0,.2,1), color 0.2s cubic-bezier(.4,0,.2,1), border-color 0.2s cubic-bezier(.4,0,.2,1), box-shadow 0.2s cubic-bezier(.4,0,.2,1);
 }
 
-body {
-  font-family: 'Inter', Arial, sans-serif;
-  background: var(--color-bg);
+html, body, #app, * {
+  min-height: 100vh;
+  background: #faf9f6;
+  font-family: 'Poppins', 'Inter', Arial, Helvetica, sans-serif !important;
   color: var(--color-secondary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;

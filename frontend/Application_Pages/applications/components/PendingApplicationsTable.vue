@@ -12,7 +12,7 @@
           <th>Actions</th>
         </tr>
       </thead>
-      <transition-group name="row-fade" tag="tbody">
+      <tbody>
         <tr v-for="app in applications" :key="app.lrn || app.id">
           <td>{{ app.lrn || 'N/A' }}</td>
           <td>{{ app.fullName || 'N/A' }}</td>
@@ -30,7 +30,7 @@
             </slot>
           </td>
         </tr>
-      </transition-group>
+      </tbody>
     </table>
     <div v-if="applications.length === 0" class="empty-state">
       Showing 0 pending application(s).
@@ -63,13 +63,9 @@ function formatDate(ts) {
 .table-wrapper {
   padding: 0 32px 12px 32px;
 }
-.pending-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 8px;
-  background: #fff;
-  font-size: 1.05rem;
-}
+.scrollable-tbody { display: none; }
+.pending-table { table-layout: auto; }
+.pending-table thead th { position: static; background: none; z-index: auto; }
 .pending-table th {
   font-family: 'Inter', sans-serif;
   text-align: left;

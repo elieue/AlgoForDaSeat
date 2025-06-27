@@ -32,13 +32,27 @@ const routes = [
 .app-shell {
   display: flex;
   height: 100vh;
-  background: #faf9f6;
 }
 .main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
   min-width: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-left: 0;
+  z-index: 1;
+  position: relative;
+  transition: margin-left 0.28s cubic-bezier(.4,0,.2,1);
+}
+/* When sidebar is hovered, shift main-content */
+.app-shell:hover .sidebar,
+.app-shell:focus-within .sidebar {
+  width: 260px;
+}
+.app-shell:hover .main-content,
+.app-shell:focus-within .main-content {
   margin-left: 260px;
 }
 /* Page transition animation */

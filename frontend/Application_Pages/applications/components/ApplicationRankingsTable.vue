@@ -5,32 +5,36 @@
         <tr>
           <th>Rank</th>
           <th>Full Name</th>
-          <th>GPA</th>
-          <th>Exam Score</th>
-          <th>Proximity (km)</th>
-          <th>Income (PHP)</th>
+          <th>GPA Points</th>
+          <th>Exam Points</th>
+          <th>Income Points</th>
+          <th>Indigent Points</th>
+          <th>Proximity Points</th>
+          <th>Total Points</th>
           <th>Eligibility for Slots</th>
           <th>Actions</th>
         </tr>
       </thead>
-      <transition-group name="row-fade" tag="tbody">
+      <tbody>
         <tr v-for="app in applications" :key="app.lrn || app.id">
           <td class="rank-cell">{{ app.rank || 'N/A' }}</td>
           <td>{{ app.fullName || 'N/A' }}</td>
-          <td>{{ app.grades || 'N/A' }}</td>
-          <td>{{ app.examScore || 'N/A' }}</td>
-          <td>{{ app.proximity ? app.proximity + ' km' : 'N/A' }}</td>
-          <td>{{ app.monthlyIncome ? '\u20b1' + app.monthlyIncome.toLocaleString() : 'N/A' }}</td>
+          <td>{{ app.gpaPts ?? 'N/A' }}</td>
+          <td>{{ app.examPts ?? 'N/A' }}</td>
+          <td>{{ app.incomePts ?? 'N/A' }}</td>
+          <td>{{ app.indigentPts ?? 'N/A' }}</td>
+          <td>{{ app.proximityPts ?? 'N/A' }}</td>
+          <td>{{ app.totalPts ?? 'N/A' }}</td>
           <td>
             <span :class="['eligibility-badge', eligibilityClass(app.eligibility)]">
-              {{ app.eligibility || '—' }}
+              {{ app.eligibility || '\u2014' }}
             </span>
           </td>
           <td>
             <ViewButton @click="$emit('view', app)" />
           </td>
         </tr>
-      </transition-group>
+      </tbody>
     </table>
     <div v-if="applications.length === 0" class="empty-state">
       No ranked applications to display.
@@ -68,6 +72,7 @@ function eligibilityClass(eligibility) {
   background: #fff;
   font-size: 1.05rem;
   min-width: 900px;
+  table-layout: auto;
 }
 .rankings-table th {
   font-family: 'Inter', sans-serif;
@@ -149,4 +154,6 @@ function eligibilityClass(eligibility) {
   opacity: 1;
   transform: translateY(0);
 }
+.scrollable-tbody { display: none; }
+.rankings-table thead th { position: static; background: none; z-index: auto; }
 </style> 

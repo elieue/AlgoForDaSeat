@@ -1,10 +1,14 @@
 <template>
   <div class="stat-card">
-    <div class="icon-wrapper">
+    <div class="card-icon">
       <img :src="icon" :alt="title + ' icon'" class="icon" />
     </div>
-    <div class="stat-value">{{ value }}</div>
-    <div class="stat-title">{{ title }}</div>
+    <div class="card-content">
+      <div class="card-label">{{ title }}</div>
+      <div class="card-value">
+        <span class="value-number">{{ value }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -18,43 +22,98 @@ const props = defineProps({
 
 <style scoped>
 .stat-card {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
-  padding: 24px 20px 18px 20px;
+  background: var(--color-card);
+  border: 2px solid var(--color-border);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.12);
+  position: relative;
+  min-height: 180px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 140px;
+  transition: all 0.2s cubic-bezier(.4,0,.2,1);
 }
-.icon-wrapper {
-  width: 38px;
-  height: 38px;
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.16);
+  border-color: var(--color-yellow-text);
+}
+
+.card-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  opacity: 0.7;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 6px;
 }
+
 .icon {
   width: 32px;
   height: 32px;
+  color: var(--color-yellow-text);
 }
-.stat-value {
-  font-family: 'Poppins', sans-serif;
-  font-size: 2.1rem;
-  font-weight: 800;
-  color: #f7a600;
-  margin-bottom: 2px;
+
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  margin-bottom: 12px;
+  font-family: 'Poppins', Arial, sans-serif;
+}
+
+.card-value {
+  margin-bottom: 8px;
+}
+
+.value-number {
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--color-yellow-text);
+  font-family: 'Poppins', Arial, sans-serif;
   line-height: 1;
 }
-.stat-title {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.05rem;
-  color: #888;
-  font-weight: 600;
-  text-align: center;
-  line-height: 1.2;
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .stat-card {
+    padding: 20px;
+    min-height: 160px;
+  }
+  
+  .value-number {
+    font-size: 2.5rem;
+  }
+  
+  .card-label {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-card {
+    padding: 16px;
+    min-height: 140px;
+  }
+  
+  .value-number {
+    font-size: 2rem;
+  }
+  
+  .card-icon {
+    top: 16px;
+    right: 16px;
+  }
 }
 </style> 

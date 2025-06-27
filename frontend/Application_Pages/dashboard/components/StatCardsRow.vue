@@ -24,8 +24,22 @@ const props = defineProps({
 <style scoped>
 .stats-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
-  margin-bottom: 36px;
+  margin-bottom: 32px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .stats-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-row {
+    gap: 16px;
+  }
 }
 </style> 

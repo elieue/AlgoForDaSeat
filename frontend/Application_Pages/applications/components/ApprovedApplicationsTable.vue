@@ -12,7 +12,7 @@
           <th>Actions</th>
         </tr>
       </thead>
-      <transition-group name="row-fade" tag="tbody">
+      <tbody>
         <tr v-for="app in applications" :key="app.lrn || app.id">
           <td>{{ app.lrn || 'N/A' }}</td>
           <td>{{ app.fullName || 'N/A' }}</td>
@@ -30,7 +30,7 @@
             </slot>
           </td>
         </tr>
-      </transition-group>
+      </tbody>
     </table>
     <div v-if="applications.length === 0" class="empty-state">
       Showing 0 approved application(s).
@@ -69,6 +69,12 @@ function formatDate(ts) {
   margin-top: 8px;
   background: #fff;
   font-size: 1.05rem;
+  table-layout: auto;
+}
+.approved-table thead th {
+  position: static;
+  background: none;
+  z-index: auto;
 }
 .approved-table th {
   font-family: 'Inter', sans-serif;
@@ -111,4 +117,5 @@ function formatDate(ts) {
   opacity: 1;
   transform: translateY(0);
 }
+.scrollable-tbody { display: none; }
 </style> 

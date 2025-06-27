@@ -136,13 +136,15 @@ async function onProcessRankings() {
         .map((app, index) => ({
           id: app.id,
           fullName: app.full_name,
-          grades: app.gpa,
-          examScore: app.exam,
-          monthlyIncome: app.income,
+          gpaPts: app.score && app.score.gpaPts,
+          examPts: app.score && app.score.examPts,
+          incomePts: app.score && app.score.incomePts,
+          indigentPts: app.score && app.score.indigentPts,
+          proximityPts: app.score && app.score.proximityPts,
+          totalPts: app.score && app.score.total,
           status: app.status,
           assigned: app.assigned,
           rank: app.rank,
-          compositeScore: app.total || (app.score && app.score.total),
           eligibility: app.status === 'admitted' ? 'High Priority' : 'Waitlisted',
         }));
       applicationsStore.setRankings(processedRankings);
@@ -205,7 +207,7 @@ onMounted(() => {
   margin-bottom: 8px;
 }
 .page-title {
-  color: var(--color-yellow-text);
+  color: #f7a600;
   font-family: 'Poppins', sans-serif;
   font-size: 2.2rem;
   font-weight: 900;
@@ -331,14 +333,14 @@ onMounted(() => {
   font-family: 'Poppins', sans-serif;
   font-size: 1.35rem;
   font-weight: 800;
-  color: var(--color-orange-text);
+  color: #888;
   margin-bottom: 8px;
   text-align: center;
   /* Figma: #b35c00 */
 }
 .empty-desc {
   font-family: 'Inter', sans-serif;
-  color: var(--color-blue-text);
+  color: #aaa;
   font-size: 1.08rem;
   text-align: center;
   /* Figma: #002171 */

@@ -30,7 +30,7 @@ async function allocateSlots(req, res) {
         full_name: s.full_name,
         gpa, exam, income, isIndigent,
         address: s.address,
-        score: { ...score, proximityPts },
+        score: score,
       };
     });
 

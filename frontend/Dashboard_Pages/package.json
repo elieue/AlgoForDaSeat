@@ -1,0 +1,23 @@
+{
+  "name": "algofordaseatdashboard",
+  "version": "1.0.0",
+  "description": "AlgoForDaSeat Dashboard - Static Frontend",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "serve ."
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.0",
+    "serve": "^14.2.4",
+    "vite": "^7.0.0"
+  },
+  "dependencies": {
+    "chart.js": "^4.5.0",
+    "leaflet": "^1.9.4",
+    "pinia": "^3.0.3",
+    "vue": "^3.5.17",
+    "vue-router": "^4.5.1"
+  }
+}

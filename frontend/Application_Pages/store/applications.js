@@ -9,7 +9,9 @@ export const useApplicationsStore = defineStore('applications', {
     rejected: [],
     rankings: [],
     loading: false,
-    error: null
+    error: null,
+    allocationLoading: false,
+    allocationError: null
   }),
   
   getters: {
@@ -112,6 +114,24 @@ export const useApplicationsStore = defineStore('applications', {
       } catch (error) {
         console.error('Error fetching application stats:', error);
         throw error;
+      }
+    },
+
+    async allocateSlots() {
+      this.allocationLoading = true;
+      this.allocationError = null;
+      
+      try {
+        const result = await applicationsAPI.allocateSlots();
+        // Refresh all applications after allocation
+        await this.loadAllApplications();
+        return result;
+      } catch (error) {
+        this.allocationError = 'Failed to allocate slots';
+        console.error('Error allocating slots:', error);
+        throw error;
+      } finally {
+        this.allocationLoading = false;
       }
     },
 

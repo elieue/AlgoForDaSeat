@@ -1,28 +1,12 @@
 <template>
   <div class="page-container">
     <h1 class="page-title">Pending Applications</h1>
-    <p class="page-desc">Review applications awaiting evaluation.</p>    
-    <!-- Loading State -->
-    <div v-if="loading" class="loading-state">
-      <div class="loading-spinner"></div>
-      <p>Loading pending applications...</p>
-    </div>
-    
-    <!-- Error State -->
-    <div v-else-if="error" class="error-state">
-      <p class="error-message">{{ error }}</p>
-      <button @click="loadData" class="retry-btn">Retry</button>
-    </div>
-    
-    <!-- Empty State -->
-    <div v-else-if="pending.length === 0" class="empty-state">
+    <p class="page-desc">Review applications awaiting evaluation.</p>
+    <div v-if="pending.length === 0" class="empty-state">
       <img src="../../Assets/view-details-logo.svg" class="empty-icon" alt="No Pending" />
       <h2 class="empty-title">No Pending Applications</h2>
       <p class="empty-desc">All applications have been processed or there are no applications in the system.</p>
     </div>
-   
-    <!-- Data State -->
-
     <div v-else class="card">
       <div class="card-header">
         <span class="card-title">
@@ -37,29 +21,17 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
-
 import PendingApplicationsTable from './components/PendingApplicationsTable.vue';
 import { storeToRefs } from 'pinia';
 import { useApplicationsStore } from '../store/applications';
 import { useRouter } from 'vue-router';
 
 const store = useApplicationsStore();
-const { pending, pendingCount, loading, error } = storeToRefs(store);
+const { pending, pendingCount } = storeToRefs(store);
 const router = useRouter();
-
 function goToApplicantProfile(app) {
   router.push(`/admin/applicant-profile/${app.id || app.lrn}`);
 }
-
-async function loadData() {
-  await store.loadPendingApplications();
-}
-
-onMounted(() => {
-  loadData();
-});
-
 </script>
 
 <style scoped>
@@ -145,61 +117,4 @@ onMounted(() => {
   font-size: 1rem;
   max-width: 400px;
 }
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: 16px;
-  padding: 48px 0;
-  margin-top: 8px;
-  text-align: center;
-}
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #f7a600;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 16px;
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-.error-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border: 2px dashed #ffcdd2;
-  border-radius: 16px;
-  padding: 48px 0;
-  margin-top: 8px;
-  text-align: center;
-}
-.error-message {
-  font-family: 'Inter', sans-serif;
-  color: #d32f2f;
-  font-size: 1rem;
-  margin-bottom: 16px;
-}
-.retry-btn {
-  background: #f7a600;
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-.retry-btn:hover {
-  background: #e69500;
-}
-
 </style> 

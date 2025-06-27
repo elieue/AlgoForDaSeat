@@ -102,7 +102,7 @@ async function seed() {
       );
     }
 
-    console.log('Successfully inserted 100 records into algofordaseat');
+    console.log('✅ Successfully inserted 100 records into algofordaseat');
     client.release();
     await pool.end();
   } catch (err) {
@@ -110,4 +110,5 @@ async function seed() {
   }
 }
 
+// ✅ EXPORT FUNCTION
 module.exports = { seed };

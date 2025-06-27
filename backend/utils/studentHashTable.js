@@ -1,7 +1,5 @@
 class StudentHashTable {
-
-  constructor(size = 101) {
-
+  constructor(size = 101) { // ✅ Use a default prime number
     this.table = new Array(size);
   }
 
@@ -30,19 +28,13 @@ class StudentHashTable {
     return null;
   }
 
-
-  getAll() {
-    return this.values(); 
-  }
   updateStatus(key, status) {
     const index = this._hash(key);
     const bucket = this.table[index];
     if (bucket) {
       for (let i = 0; i < bucket.length; i++) {
         if (bucket[i][0] === key) {
-
           bucket[i][1].final_status = status;
-
           return;
         }
       }
@@ -62,28 +54,16 @@ class StudentHashTable {
   }
 
   display() {
-    console.log("\nHash Table Buckets:");
-    this.table.forEach((bucket, index) => {
-      if (bucket && bucket.length > 0) {
-        console.log(`\n[Index ${index}]`);
-        bucket.forEach(([key, value]) => {
-          console.log(` → Key: ${key}, Name: ${value.full_name}, ID: ${value.application_id}`);
-        });
-      }
-    });
-  }
-
-  displayStatuses() {
-    console.log("\n📊 Current Hash Table Statuses:");
-    const allStudents = this.values();
-    const statusCounts = {};
-    allStudents.forEach(student => {
-      const status = student.status || 'unknown';
-      statusCounts[status] = (statusCounts[status] || 0) + 1;
-      console.log(`  - ${student.full_name} (${student.application_id}): ${status}`);
-    });
-    console.log("\n📈 Status Summary:", statusCounts);
-  }
+  console.log("\n🔍 Hash Table Buckets:");
+  this.table.forEach((bucket, index) => {
+    if (bucket && bucket.length > 0) {
+      console.log(`\n[Index ${index}]`);
+      bucket.forEach(([key, value]) => {
+        console.log(` → Key: ${key}, Name: ${value.full_name}, ID: ${value.application_id}`);
+      });
+    }
+  });
+}
 }
 
 module.exports = { StudentHashTable };

@@ -2,28 +2,11 @@
   <div class="page-container">
     <h1 class="page-title">Approved Applications</h1>
     <p class="page-desc">Students who have been approved for enrollment.</p>
-  
-    <!-- Loading State -->
-    <div v-if="loading" class="loading-state">
-      <div class="loading-spinner"></div>
-      <p>Loading approved applications...</p>
-    </div>
-    
-    <!-- Error State -->
-    <div v-else-if="error" class="error-state">
-      <p class="error-message">{{ error }}</p>
-      <button @click="loadData" class="retry-btn">Retry</button>
-    </div>
-    
-    <!-- Empty State -->
-    <div v-else-if="approved.length === 0" class="empty-state">
+    <div v-if="approved.length === 0" class="empty-state">
       <img src="../../Assets/approved-applications-logo.svg" class="empty-icon" alt="No Approved" />
       <h2 class="empty-title">No Approved Applications</h2>
       <p class="empty-desc">No applications have been approved yet. Review pending applications to approve them.</p>
     </div>
-   
-    <!-- Data State -->
-
     <div v-else class="card">
       <div class="card-header">
         <span class="card-title">
@@ -38,28 +21,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
 import ApprovedApplicationsTable from './components/ApprovedApplicationsTable.vue';
 import { storeToRefs } from 'pinia';
 import { useApplicationsStore } from '../store/applications';
 import { useRouter } from 'vue-router';
 
 const store = useApplicationsStore();
-const { approved, approvedCount, loading, error } = storeToRefs(store);
+const { approved, approvedCount } = storeToRefs(store);
 const router = useRouter();
-
 function goToApplicantProfile(app) {
   router.push(`/admin/applicant-profile/${app.id || app.lrn}`);
 }
-
-async function loadData() {
-  await store.loadApprovedApplications();
-}
-
-onMounted(() => {
-  loadData();
-});
-
 </script>
 
 <style scoped>
@@ -145,61 +117,4 @@ onMounted(() => {
   font-size: 1rem;
   max-width: 400px;
 }
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: 16px;
-  padding: 48px 0;
-  margin-top: 8px;
-  text-align: center;
-}
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #f7a600;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 16px;
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-.error-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border: 2px dashed #ffcdd2;
-  border-radius: 16px;
-  padding: 48px 0;
-  margin-top: 8px;
-  text-align: center;
-}
-.error-message {
-  font-family: 'Inter', sans-serif;
-  color: #d32f2f;
-  font-size: 1rem;
-  margin-bottom: 16px;
-}
-.retry-btn {
-  background: #f7a600;
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-.retry-btn:hover {
-  background: #e69500;
-}
-
 </style> 

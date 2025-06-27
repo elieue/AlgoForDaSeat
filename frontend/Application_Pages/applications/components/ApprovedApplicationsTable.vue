@@ -22,6 +22,7 @@
           <td>
             <slot name="status" :status="app.status">
               <StatusBadge :status="app.status === 'admitted' ? 'Approved' : app.status || 'approved'" />
+
             </slot>
           </td>
           <td>

@@ -2,7 +2,7 @@
   <div class="page-container">
     <h1 class="page-title">Approved Applications</h1>
     <p class="page-desc">Students who have been approved for enrollment.</p>
-    
+  
     <!-- Loading State -->
     <div v-if="loading" class="loading-state">
       <div class="loading-spinner"></div>
@@ -21,8 +21,9 @@
       <h2 class="empty-title">No Approved Applications</h2>
       <p class="empty-desc">No applications have been approved yet. Review pending applications to approve them.</p>
     </div>
-    
+   
     <!-- Data State -->
+
     <div v-else class="card">
       <div class="card-header">
         <span class="card-title">
@@ -58,6 +59,7 @@ async function loadData() {
 onMounted(() => {
   loadData();
 });
+
 </script>
 
 <style scoped>
@@ -199,4 +201,5 @@ onMounted(() => {
 .retry-btn:hover {
   background: #e69500;
 }
+
 </style> 

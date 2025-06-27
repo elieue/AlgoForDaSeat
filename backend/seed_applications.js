@@ -110,5 +110,4 @@ async function seed() {
   }
 }
 
-// EXPORT FUNCTION
 module.exports = { seed };

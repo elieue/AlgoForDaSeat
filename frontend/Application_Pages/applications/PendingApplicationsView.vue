@@ -1,8 +1,7 @@
 <template>
   <div class="page-container">
     <h1 class="page-title">Pending Applications</h1>
-    <p class="page-desc">Review applications awaiting evaluation.</p>
-    
+    <p class="page-desc">Review applications awaiting evaluation.</p>    
     <!-- Loading State -->
     <div v-if="loading" class="loading-state">
       <div class="loading-spinner"></div>
@@ -21,8 +20,9 @@
       <h2 class="empty-title">No Pending Applications</h2>
       <p class="empty-desc">All applications have been processed or there are no applications in the system.</p>
     </div>
-    
+   
     <!-- Data State -->
+
     <div v-else class="card">
       <div class="card-header">
         <span class="card-title">
@@ -38,6 +38,7 @@
 
 <script setup>
 import { onMounted } from 'vue';
+
 import PendingApplicationsTable from './components/PendingApplicationsTable.vue';
 import { storeToRefs } from 'pinia';
 import { useApplicationsStore } from '../store/applications';
@@ -58,6 +59,7 @@ async function loadData() {
 onMounted(() => {
   loadData();
 });
+
 </script>
 
 <style scoped>
@@ -199,4 +201,5 @@ onMounted(() => {
 .retry-btn:hover {
   background: #e69500;
 }
+
 </style> 

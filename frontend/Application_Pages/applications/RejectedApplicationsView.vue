@@ -17,12 +17,14 @@
     
     <!-- Empty State -->
     <div v-else-if="rejected.length === 0" class="empty-state">
+
       <img src="../../Assets/rejected-applications-logo.svg" class="empty-icon" alt="No Rejected" />
       <h2 class="empty-title">No Rejected Applications</h2>
       <p class="empty-desc">No applications have been rejected yet.</p>
     </div>
     
     <!-- Data State -->
+
     <div v-else class="card">
       <div class="card-header">
         <span class="card-title">
@@ -38,6 +40,7 @@
 
 <script setup>
 import { onMounted } from 'vue';
+
 import RejectedApplicationsTable from './components/RejectedApplicationsTable.vue';
 import { storeToRefs } from 'pinia';
 import { useApplicationsStore } from '../store/applications';
@@ -58,6 +61,7 @@ async function loadData() {
 onMounted(() => {
   loadData();
 });
+
 </script>
 
 <style scoped>

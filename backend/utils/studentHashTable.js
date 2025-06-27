@@ -1,5 +1,7 @@
 class StudentHashTable {
+
   constructor(size = 101) {
+
     this.table = new Array(size);
   }
 
@@ -28,17 +30,19 @@ class StudentHashTable {
     return null;
   }
 
+
   getAll() {
     return this.values(); 
   }
-
   updateStatus(key, status) {
     const index = this._hash(key);
     const bucket = this.table[index];
     if (bucket) {
       for (let i = 0; i < bucket.length; i++) {
         if (bucket[i][0] === key) {
-          bucket[i][1].status = status;
+
+          bucket[i][1].final_status = status;
+
           return;
         }
       }

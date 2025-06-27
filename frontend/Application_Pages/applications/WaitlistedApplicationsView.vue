@@ -2,7 +2,7 @@
   <div class="page-container">
     <h1 class="page-title">Waitlisted Applications</h1>
     <p class="page-desc">Applications awaiting slot availability.</p>
-    
+   
     <!-- Loading State -->
     <div v-if="loading" class="loading-state">
       <div class="loading-spinner"></div>
@@ -17,12 +17,14 @@
     
     <!-- Empty State -->
     <div v-else-if="waitlisted.length === 0" class="empty-state">
+
       <img src="../../Assets/waitlisted-applications-logo.svg" class="empty-icon" alt="No Waitlisted" />
       <h2 class="empty-title">No Waitlisted Applications</h2>
       <p class="empty-desc">No applications are currently on the waitlist.</p>
     </div>
     
     <!-- Data State -->
+
     <div v-else class="card">
       <div class="card-header">
         <span class="card-title">
@@ -38,6 +40,7 @@
 
 <script setup>
 import { onMounted } from 'vue';
+
 import WaitlistedApplicationsTable from './components/WaitlistedApplicationsTable.vue';
 import { storeToRefs } from 'pinia';
 import { useApplicationsStore } from '../store/applications';
@@ -58,6 +61,7 @@ async function loadData() {
 onMounted(() => {
   loadData();
 });
+
 </script>
 
 <style scoped>

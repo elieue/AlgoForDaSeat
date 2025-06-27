@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import applicationsAPI from '../api/applications.js'
 
+
 export default function useApplicantProfile() {
   const applicant = ref(null)
   const loading = ref(false)
@@ -47,6 +48,7 @@ export default function useApplicantProfile() {
       }
     } catch (err) {
       console.error('Error fetching applicant:', err)
+
       error.value = 'Failed to load applicant data'
     } finally {
       loading.value = false

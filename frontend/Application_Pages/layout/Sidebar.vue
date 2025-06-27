@@ -94,6 +94,7 @@ import logoutIcon from '../../Assets/log-out-icon.svg';
   box-shadow: 2px 0 8px 0 rgba(0,0,0,0.03);
   transition: background 0.25s cubic-bezier(.4,0,.2,1);
   z-index: 1000;
+
 }
 .logo-section {
   display: flex;

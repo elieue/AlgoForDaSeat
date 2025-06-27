@@ -113,6 +113,7 @@ const waitlistedRankings = computed(() => {
   return rankings.value
     .filter(ranking => ranking.status === 'waitlisted')
     .sort((a, b) => a.rank - b.rank);
+
 });
 
 const router = useRouter();
@@ -151,6 +152,7 @@ async function onProcessRankings() {
     localError.value = 'Failed to process rankings. Please try again.';
   } finally {
     localLoading.value = false;
+
   }
 }
 
@@ -164,6 +166,7 @@ async function loadData() {
 
 onMounted(() => {
   loadData();
+
 });
 </script>
 

@@ -4,6 +4,7 @@ function toCamelCase(str) {
 
 function normalizeObjects(raw) {
   return {
+
     id: raw.application_id,
     lrn: raw.lrn || raw.application_id,
     applicationId: raw.application_id,

@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <h1 class="dashboard-title poppins font-bold text-xxl">Dashboard</h1>
     <p class="dashboard-desc text-secondary font-medium text-sm">Overview and statistics of the application process</p>
-    
+  
     <!-- Loading State -->
     <div v-if="loading" class="loading-state">
       <div class="loading-spinner"></div>
@@ -23,6 +23,7 @@
     </div>
     
     <!-- Data State -->
+
     <div v-else>
       <transition-group name="stat-fade" tag="div">
         <StatCardsRow :stats="stats" key="stat-row" />
@@ -36,6 +37,7 @@
 
 <script setup>
 import { onMounted } from 'vue';
+
 import StatCardsRow from './components/StatCardsRow.vue';
 import HeatmapCard from './components/HeatmapCard.vue';
 import { storeToRefs } from 'pinia';
@@ -67,6 +69,7 @@ async function loadData() {
 onMounted(() => {
   loadData();
 });
+
 </script>
 
 <style scoped>
@@ -194,4 +197,5 @@ onMounted(() => {
 .retry-btn:hover {
   background: #e69500;
 }
+
 </style> 

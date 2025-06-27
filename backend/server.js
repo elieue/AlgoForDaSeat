@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
+
 const authRoutes = require("./routes/authRoutes");
 const applicantRoutes = require("./routes/applicantRoutes");
 const applicationResultsRoutes = require("./routes/applicationResultsRoutes");
@@ -9,17 +10,21 @@ const { pool, fetchStudents } = require("./db");
 const { initializeHashTable, getHashTable } = require('./data/hashSingleton'); // ✅
 const { seed } = require('./seed_applications');
 
+
 dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-// API Routes
+// 🔐 API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/applications", applicantRoutes);
 app.use("/api/applications", applicationResultsRoutes);
 
-// Test DB connection
+
+// 🧠 Create shared hash table (in-memory only)
+const hashTable = new StudentHashTable();
+n
 pool.query("SELECT 1")
   .then(() => console.log("Connected to PostgreSQL"))
   .catch((err) => console.error("Database connection error:", err));
@@ -31,6 +36,18 @@ pool.query("SELECT 1")
 })();
 
 // Allocation logic
+// 🪄 Seeder logic on server start
+(async () => {
+  try {
+    console.log("⏳ Running hash seeder...");
+    await runHashSeeder(hashTable);
+    console.log("✅ Hash table is seeded and ready.");
+  } catch (err) {
+    console.error("❌ Seeder Error:", err.message);
+  }
+})();
+
+// 🚀 Allocation endpoint (via PostgreSQL stored function)
 app.get("/allocate-seats", async (req, res) => {
   try {
     await pool.query("SELECT allocate_seats()");
@@ -45,6 +62,7 @@ app.get("/allocate-seats", async (req, res) => {
 // Get individual student from in-memory hash table
 app.get("/student/:id", (req, res) => {
   const hashTable = getHashTable(); // Pull from singleton
+
   const studentId = req.params.id;
   const student = hashTable.get(studentId);
   if (student) {
@@ -54,7 +72,6 @@ app.get("/student/:id", (req, res) => {
   }
 });
 
-// Serve frontend files
 const frontendPath = path.join(__dirname, "..", "frontend", "client", "dist");
 app.use(express.static(frontendPath));
 

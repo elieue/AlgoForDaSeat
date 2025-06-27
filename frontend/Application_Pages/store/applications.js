@@ -10,6 +10,7 @@ export const useApplicationsStore = defineStore('applications', {
     rankings: [],
     loading: false,
     error: null
+
   }),
   
   getters: {

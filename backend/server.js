@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
-
+const StudentHashTable = require('./utils/studentHashTable');
 const authRoutes = require("./routes/authRoutes");
 const applicantRoutes = require("./routes/applicantRoutes");
 const applicationResultsRoutes = require("./routes/applicationResultsRoutes");
@@ -23,8 +23,6 @@ app.use("/api/applications", applicationResultsRoutes);
 
 
 // 🧠 Create shared hash table (in-memory only)
-const hashTable = new StudentHashTable();
-n
 pool.query("SELECT 1")
   .then(() => console.log("Connected to PostgreSQL"))
   .catch((err) => console.error("Database connection error:", err));

@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import Sidebar from '../../Application_Pages/layout/Sidebar.vue';
+import Sidebar from './Sidebar.vue';
 import dashboardIcon from '../../Assets/dashboard-icon.svg';
 import viewDetailsIcon from '../../Assets/view-details-logo.svg';
 import waitlistedIcon from '../../Assets/waitlisted-applications-logo.svg';
@@ -52,4 +52,4 @@ const routes = [
   opacity: 1;
   transform: translateY(0);
 }
-</style>
+</style> 

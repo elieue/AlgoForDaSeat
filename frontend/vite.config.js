@@ -6,4 +6,12 @@ export default defineConfig({
   server: {
     port: 5173, // Adjust if needed
   },
+  root: '.',
+  build: {
+    rollupOptions: {
+      input: {
+        main: './index-test.html'
+      }
+    }
+  }
 });

@@ -39,6 +39,7 @@ const routes = [
   display: flex;
   flex-direction: column;
   min-width: 0;
+  margin-left: 260px;
 }
 /* Page transition animation */
 .page-fade-slide-enter-active, .page-fade-slide-leave-active {

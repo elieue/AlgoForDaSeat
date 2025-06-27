@@ -21,7 +21,7 @@
           <td>{{ formatDate(app.submissionTimestamp) }}</td>
           <td>
             <slot name="status" :status="app.status">
-              <StatusBadge :status="app.status || 'approved'" />
+              <StatusBadge :status="app.status === 'admitted' ? 'Approved' : app.status || 'approved'" />
             </slot>
           </td>
           <td>

@@ -81,6 +81,9 @@ import logoutIcon from '../../Assets/log-out-icon.svg';
 
 <style scoped>
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 260px;
   background: #fff; /* Figma: pure white */
   border-right: 1px solid #f0f0f0;
@@ -90,6 +93,7 @@ import logoutIcon from '../../Assets/log-out-icon.svg';
   padding: 0;
   box-shadow: 2px 0 8px 0 rgba(0,0,0,0.03);
   transition: background 0.25s cubic-bezier(.4,0,.2,1);
+  z-index: 1000;
 }
 .logo-section {
   display: flex;

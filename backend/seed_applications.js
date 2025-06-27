@@ -1,6 +1,7 @@
 const { faker } = require('@faker-js/faker');
 const { Pool } = require('pg');
 
+// Helper to generate a random date string
 function getRandomDate() {
   const start = new Date('2025-01-01');
   const end = new Date('2025-04-30');
@@ -10,6 +11,7 @@ function getRandomDate() {
     .split('.')[0];
 }
 
+// Database connection configuration
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
@@ -38,18 +40,48 @@ const schools = [
 const emailProviders = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'protonmail.com'];
 
 async function seed() {
+  const client = await pool.connect();
   try {
-    const client = await pool.connect();
+    // --- FIX 1: Create the table if it doesn't exist ---
+    // This runs before any other query, ensuring the table is ready.
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS student_applications (
+        application_id VARCHAR(50) PRIMARY KEY,
+        full_name VARCHAR(255),
+        email VARCHAR(255),
+        lrn VARCHAR(20),
+        gpa NUMERIC(4, 2),
+        entrance_exam_score INT,
+        address TEXT,
+        proximity NUMERIC(5, 2),
+        gender VARCHAR(20),
+        ethnicity VARCHAR(50),
+        age INT,
+        school_attended VARCHAR(255),
+        parent_mother VARCHAR(255),
+        parent_father VARCHAR(255),
+        parents_income NUMERIC(10, 2),
+        economic_status VARCHAR(50),
+        itr_or_indigent VARCHAR(100),
+        submission_date TIMESTAMP,
+        application_status VARCHAR(50) DEFAULT 'Pending',
+        reason_for_decision TEXT
+      );
+    `);
+    console.log('✅ Table "student_applications" is ready.');
+
     const lrnSchoolMap = {};
 
-    // ✅ Clear table to avoid duplicate application_ids
+    // Clear table to avoid issues on re-running the seed script
     await client.query('DELETE FROM student_applications');
+    console.log('🗑️  Cleared existing data from "student_applications".');
 
+    // Loop to generate and insert 100 fake student applications
     for (let i = 1; i <= 100; i++) {
       const lastName = faker.person.lastName().replace(/'/g, "''");
       const firstName = faker.person.firstName().replace(/'/g, "''");
       const fullName = `${firstName} ${lastName}`;
-      const userId = `STU${i.toString().padStart(3, '0')}`; // STU001, STU002, ...
+      const userId = `STU${i.toString().padStart(3, '0')}`;
       const mother = `${faker.person.firstName().replace(/'/g, "''")} ${lastName}`;
       const father = `${faker.person.firstName().replace(/'/g, "''")} ${lastName}`;
       const income = faker.number.int({ min: 50000, max: 300000 });
@@ -102,11 +134,16 @@ async function seed() {
       );
     }
 
-    console.log('Successfully inserted 100 records into algofordaseat');
-    client.release();
-    await pool.end();
+    console.log(`✅ Successfully inserted 100 records into "student_applications".`);
+
   } catch (err) {
-    console.error('❌ Insertion error:', err);
+    console.error('❌ Seeding script error:', err);
+  } finally {
+    // This is crucial. It releases the client back to the pool so other parts
+    // of your application can use it.
+    client.release();
+    // --- FIX 2: Removed `await pool.end()` ---
+    // We do not end the pool here, as the main server still needs it.
   }
 }
 

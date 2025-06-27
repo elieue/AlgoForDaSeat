@@ -4,7 +4,7 @@ const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
   database: 'algofordaseat',
-  password: 'Fantastic_Best0113',
+  password: '123',
   port: 5432,
 });
 
@@ -58,8 +58,35 @@ function computeScore({ gpa, exam, income, isIndigent, isNear }) {
       };
     });
 
-    // ✅ Use built-in sort (stable and precise)
-    students.sort((a, b) => b.total - a.total);
+    // COUNTING SORT
+
+    // Scale totals for counting sort (to preserve 2 decimal places)
+    students.forEach(s => s.scaledTotal = Math.round(s.total * 100));
+
+    // Find max score
+    const maxScore = Math.max(...students.map(s => s.scaledTotal));
+
+    // Initialize buckets (arrays for each score)
+    const buckets = Array.from({ length: maxScore + 1 }, () => []);
+
+    // Fill the buckets
+    students.forEach(s => {
+      buckets[s.scaledTotal].push(s);
+    });
+
+    // Collect sorted students in descending order
+    const sortedStudents = [];
+    for (let i = maxScore; i >= 0; i--) {
+      if (buckets[i].length > 0) {
+        sortedStudents.push(...buckets[i]);
+      }
+    }
+
+    // Replace original array with sorted one
+    students = sortedStudents;
+
+    // Restore the original `total` if needed
+    students.forEach(s => delete s.scaledTotal);
 
     // Assign realistic percentile ranks
     let currentPercentile = 100;

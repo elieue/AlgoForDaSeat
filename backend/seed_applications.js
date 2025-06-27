@@ -14,7 +14,7 @@ const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
   database: 'algofordaseat',
-  password: 'Fantastic_Best0113',
+  password: '123',
   port: 5432
 });
 
@@ -112,3 +112,15 @@ async function seed() {
 
 // ✅ EXPORT FUNCTION
 module.exports = { seed };
+
+if (require.main === module) { // I DO NOT KNOW HOW TO RUN SEED() BUT THIS WORKS HELP. If anyone can tell me, you may remove these lines :D
+  seed()
+    .then(() => {
+      console.log('✅ Seeding complete');
+      process.exit();
+    })
+    .catch((err) => {
+      console.error('❌ Seeding failed:', err);
+      process.exit(1);
+    });
+}

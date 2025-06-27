@@ -1,9 +1,10 @@
 <template>
   <div class="landing-page">
-    <header class="header" style="background: rgba(255,255,255,0.35); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 2px 12px rgba(210,105,30,0.04);">
+    <header class="header" style="background: transparent; backdrop-filter: none; box-shadow: none;">
       <img src="../assets/logo.png" alt="Logo" class="logo-icon" />
       <button class="admin-login-btn" @click="goToLogin">Admin Login</button>
     </header>
+    <div class="header-border"></div>
     <main class="main-content">
       <h1>
         <span class="main-title-1">
@@ -56,6 +57,7 @@ function goToLogin() {
   min-height: 100vh;
   background: linear-gradient(135deg, #fff8ee 0%, #ffe5c2 100%);
   padding-bottom: 40px;
+  position: relative;
 }
 .header {
   display: flex;
@@ -147,10 +149,10 @@ h1 {
   margin-bottom: 24px;
 }
 .mission-section p {
-  color: #363636;
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-  font-size: 18px;
+  color: #6A7178;
+  font-family: 'Inter', Arial, sans-serif;
   font-weight: 400;
+  font-size: 18px;
   line-height: 29.27px;
   letter-spacing: 0%;
   text-align: center;
@@ -229,5 +231,16 @@ h1 {
 .bottom-team-link:hover {
   background: #ffe5c2;
   color: #f4a825;
+}
+.header-border {
+  width: 1168px;
+  height: 3px;
+  background: #F6EDDC;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 77px;
+  margin: 0;
+  z-index: 10;
 }
 </style>

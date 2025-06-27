@@ -1,5 +1,8 @@
 <template>
   <div class="team-bg">
+    <button class="back-home-btn" @click="goHome">
+      <span class="back-arrow">←</span> <span class="back-text">Back to Home</span>
+    </button>
     <div class="team-container">
       <h2 class="team-title">Meet the Team</h2>
       <div class="team-grid">
@@ -9,7 +12,10 @@
             <img v-if="member.img" :src="member.img" :alt="member.name" class="team-photo" />
             <div v-else class="team-photo team-photo-placeholder">150×150</div>
           </div>
-          <div class="team-name">{{ member.name }}</div>
+          <div class="team-name">
+            <span>{{ member.name.split(',')[0] }},</span><br />
+            <span>{{ member.name.split(',')[1].trim() }}</span>
+          </div>
           <div class="team-role">{{ member.role }}</div>
         </div>
       </div>
@@ -20,7 +26,10 @@
             <img v-if="member.img" :src="member.img" :alt="member.name" class="team-photo" />
             <div v-else class="team-photo team-photo-placeholder">150×150</div>
           </div>
-          <div class="team-name">{{ member.name }}</div>
+          <div class="team-name">
+            <span>{{ member.name.split(',')[0] }},</span><br />
+            <span>{{ member.name.split(',')[1].trim() }}</span>
+          </div>
           <div class="team-role">{{ member.role }}</div>
         </div>
       </div>
@@ -30,7 +39,13 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
+function goHome() {
+  router.push('/')
+}
 // Static imports for images in src/assets
+   import bondadfelicityjoy from '../assets/bondadfelicityjoy.png'
 import cabadduelija from '../assets/cabadduelija.png'
 import delgadohannahlette from '../assets/delgadohannahlette.png'
 import gentedaisyrie from '../assets/gentedaisyrie.png'
@@ -41,7 +56,7 @@ import lapatanjesus from '../assets/lapatanjesus.png'
 import sanchezmariella from '../assets/sanchezmariella.png'
 
 const firstRow = [
-  { name: 'Bondad, Felicity Joy', role: 'Backend', img: '' }, // placeholder
+  { name: 'Bondad, Felicity Joy', role: 'Backend', img: bondadfelicityjoy },
   { name: 'Cabaddu, Elija', role: 'Backend', img: cabadduelija },
   { name: 'Delgado, Hannahlette', role: 'Frontend', img: delgadohannahlette },
   { name: 'Gente, Daisyrie', role: 'UI/UX', img: gentedaisyrie },
@@ -75,8 +90,10 @@ const secondRow = [
 }
 .team-title {
   font-family: 'Poppins', Arial, sans-serif;
-  font-size: 2.3rem;
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 28.9px;
+  line-height: 100%;
+  letter-spacing: 0%;
   color: #23272f;
   margin-bottom: 40px;
   text-align: center;
@@ -86,12 +103,14 @@ const secondRow = [
   grid-template-columns: repeat(5, 1fr);
   gap: 36px 32px;
   justify-items: center;
+  justify-content: center;
   margin-bottom: 0;
   width: 100%;
   max-width: 900px;
 }
 .team-grid-bottom {
   grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
   margin-top: 38px;
   margin-bottom: 48px;
 }
@@ -100,6 +119,8 @@ const secondRow = [
   flex-direction: column;
   align-items: center;
   width: 180px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .team-photo-wrapper {
   width: 150px;
@@ -137,9 +158,11 @@ const secondRow = [
   height: 100%;
 }
 .team-name {
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
   font-weight: 600;
-  font-size: 1.08rem;
+  font-size: 16.2px;
+  line-height: 120%;
+  letter-spacing: 0%;
   color: #23272f;
   margin-bottom: 2px;
   text-align: center;
@@ -147,9 +170,12 @@ const secondRow = [
 .team-role {
   font-family: 'Inter', Arial, sans-serif;
   font-weight: 400;
-  font-size: 15px;
-  color: #7d848d;
+  font-size: 12.2px;
+  line-height: 100%;
+  letter-spacing: 0%;
   text-align: center;
+  vertical-align: middle;
+  color: #697075;
 }
 .team-footer {
   width: 100%;
@@ -159,6 +185,36 @@ const secondRow = [
   font-family: 'Inter', Arial, sans-serif;
   margin-top: 32px;
   margin-bottom: 16px;
+}
+.back-home-btn {
+  position: absolute;
+  top: 28px;
+  left: 32px;
+  background: #fff;
+  border: 1.5px solid #ffe5c2;
+  color: #a86523;
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 8px 18px 8px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(210,105,30,0.04);
+  transition: background 0.2s, border 0.2s;
+  z-index: 10;
+}
+.back-home-btn:hover {
+  background: #fff7ef;
+  border-color: #f4a825;
+}
+.back-arrow {
+  font-size: 18px;
+  margin-right: 7px;
+}
+.back-text {
+  font-size: 16px;
 }
 @media (max-width: 1100px) {
   .team-grid {

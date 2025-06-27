@@ -5,7 +5,7 @@ const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
   database: 'algofordaseat',
-  password: 'DL-160_diplomat',
+  password: 'Fantastic_Best0113',
   port: 5432,
 });
 
@@ -64,4 +64,9 @@ pool.connect()
   })
   .catch(err => console.error("Error creating tables", err));
 
-module.exports = pool;
+  async function fetchStudents() {
+  const res = await pool.query('SELECT * FROM student_applications');
+  return res.rows;
+}
+
+module.exports = { pool, fetchStudents };

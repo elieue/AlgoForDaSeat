@@ -10,12 +10,11 @@ function getRandomDate() {
     .split('.')[0];
 }
 
-// ⛓️ Connect to the database
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
   database: 'algofordaseat',
-  password: 'DL-160_diplomat',
+  password: 'Fantastic_Best0113',
   port: 5432
 });
 
@@ -38,23 +37,25 @@ const schools = [
 
 const emailProviders = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'protonmail.com'];
 
-(async () => {
+async function seed() {
   try {
     const client = await pool.connect();
-    const lrnSchoolMap = {}; // ✅ Declare once, outside loop
+    const lrnSchoolMap = {};
+
+    // ✅ Clear table to avoid duplicate application_ids
+    await client.query('DELETE FROM student_applications');
 
     for (let i = 1; i <= 100; i++) {
       const lastName = faker.person.lastName().replace(/'/g, "''");
       const firstName = faker.person.firstName().replace(/'/g, "''");
       const fullName = `${firstName} ${lastName}`;
-      const userId = `STU${i.toString().padStart(3, '0')}`;
+      const userId = `STU${i.toString().padStart(3, '0')}`; // STU001, STU002, ...
       const mother = `${faker.person.firstName().replace(/'/g, "''")} ${lastName}`;
       const father = `${faker.person.firstName().replace(/'/g, "''")} ${lastName}`;
       const income = faker.number.int({ min: 50000, max: 300000 });
       const status = income < 100000 ? 'Lower' : income < 200000 ? 'Middle' : 'Upper';
       const isIndigent = status === 'Lower' ? 'Indigent (4ps,PhilHealth, DSWD, PWD, Solo Parent, IPs)' : 'Not Indigent (ITR)';
 
-      // Generate or reuse LRN
       let lrn;
       if (Math.random() < 0.2 && Object.keys(lrnSchoolMap).length > 0) {
         const existingLrns = Object.keys(lrnSchoolMap);
@@ -107,4 +108,7 @@ const emailProviders = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 
   } catch (err) {
     console.error('❌ Insertion error:', err);
   }
-})();
+}
+
+// ✅ EXPORT FUNCTION
+module.exports = { seed };

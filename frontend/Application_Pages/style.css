@@ -463,4 +463,11 @@ input:focus, textarea:focus, select:focus {
   color: #888;
   font-size: 1.08rem;
   text-align: center;
+}
+
+body.home-gradient-bg {
+  background: linear-gradient(135deg, #fff8ee 0%, #ffe5c2 100%) !important;
+  min-height: 100vh;
+  background-attachment: fixed;
+  background-size: cover;
 } 

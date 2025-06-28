@@ -1,29 +1,29 @@
 <template>
   <div class="sidebar">
-    <!-- Header -->
+        <!-- Header -->
     <div class="sidebar-header">
       <div class="brand">
         <div class="brand-icon">
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-          </svg>
-        </div>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+              </svg>
+            </div>
         <div class="brand-text">
           <h1 class="brand-title">AlgoForDaSeat</h1>
           <p class="brand-subtitle">Admin Dashboard</p>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Navigation -->
+        <!-- Navigation -->
     <nav class="sidebar-nav">
       <div class="nav-section">
-        <router-link
-          to="/"
+            <router-link
+              to="/"
           class="nav-link"
-          active-class="active"
-          exact
+              active-class="active"
+              exact
         >
           <div class="nav-icon">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -31,12 +31,12 @@
             </svg>
           </div>
           <span class="nav-text">Dashboard</span>
-        </router-link>
+            </router-link>
 
-        <router-link
-          to="/data-visualization"
+            <router-link
+              to="/data-visualization"
           class="nav-link"
-          active-class="active"
+              active-class="active"
         >
           <div class="nav-icon">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,7 +45,7 @@
             </svg>
           </div>
           <span class="nav-text">Data Visualization</span>
-        </router-link>
+            </router-link>
       </div>
 
       <div class="nav-section">
@@ -58,7 +58,7 @@
         >
           <div class="nav-icon">🕒</div>
           <span class="nav-text">Pending Applications</span>
-        </router-link>
+            </router-link>
 
         <router-link 
           to="/applications/waitlisted" 
@@ -67,7 +67,7 @@
         >
           <div class="nav-icon">⏳</div>
           <span class="nav-text">Waitlisted Applications</span>
-        </router-link>
+            </router-link>
 
         <router-link 
           to="/applications/approved" 
@@ -76,7 +76,7 @@
         >
           <div class="nav-icon">✅</div>
           <span class="nav-text">Approved Applications</span>
-        </router-link>
+            </router-link>
 
         <router-link 
           to="/applications/rejected" 
@@ -85,7 +85,7 @@
         >
           <div class="nav-icon">❌</div>
           <span class="nav-text">Rejected Applications</span>
-        </router-link>
+            </router-link>
 
         <router-link 
           to="/applications/rankings" 
@@ -94,9 +94,9 @@
         >
           <div class="nav-icon">📊</div>
           <span class="nav-text">Application Rankings</span>
-        </router-link>
-      </div>
-    </nav>
+            </router-link>
+          </div>
+        </nav>
 
     <!-- Footer -->
     <div class="sidebar-footer">
@@ -105,11 +105,11 @@
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7"/>
           </svg>
-        </div>
+      </div>
         <span class="logout-text">Logout</span>
-      </button>
+        </button>
+      </div>
     </div>
-  </div>
 </template>
 
 <script setup>

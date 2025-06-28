@@ -7,9 +7,12 @@ import RejectedApplicationsView from './applications/RejectedApplicationsView.vu
 import ApplicationRankingsView from './applications/ApplicationRankingsView.vue';
 import ApplicantProfile from './ApplicantProfile.vue';
 import DataVisualization from './dashboard/DataVisualization.vue';
+import Home from './Home.vue';
+import Team from './Team.vue';
 
 const routes = [
-  { path: '/', redirect: '/dashboard' },
+  { path: '/', component: Home },
+  { path: '/team', component: Team },
   { path: '/dashboard', component: DashboardView },
   { path: '/dashboard/data-visualization', component: DataVisualization },
   { path: '/slot-visualization', component: DashboardView }, // Using dashboard as placeholder

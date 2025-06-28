@@ -13,18 +13,18 @@
         <div v-else class="chart-container h-[200px] w-full relative overflow-hidden rounded-xl">
           <canvas ref="chartCanvas" class="w-full h-full" style="display:block" aria-label="Socioeconomic Distribution Pie Chart" tabindex="0" />
         </div>
-        <div class="flex justify-center mt-4 space-x-6">
+        <div class="legend-row">
           <div class="flex items-center">
-            <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
-            <span class="text-sm text-gray-600">Lower Class</span>
+            <div class="legend-dot" style="background-color: #F59E0B;"></div>
+            <span class="legend-label">Lower Class</span>
           </div>
           <div class="flex items-center">
-            <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-            <span class="text-sm text-gray-600">Middle Class</span>
+            <div class="legend-dot" style="background-color: #10B981;"></div>
+            <span class="legend-label">Middle Class</span>
           </div>
           <div class="flex items-center">
-            <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
-            <span class="text-sm text-gray-600">Upper Class</span>
+            <div class="legend-dot" style="background-color: #EF4444;"></div>
+            <span class="legend-label">Upper Class</span>
           </div>
         </div>
       </div>
@@ -144,5 +144,24 @@ watch(() => store.socioeconomic, () => { createOrUpdateChart() }, { deep: true }
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 6px;
+  border: 1.5px solid #fff;
+  box-shadow: 0 0 0 1px #ddd;
+}
+.legend-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  margin-top: 12px;
+}
+.legend-label {
+  font-size: 0.97rem;
+  color: #555;
 }
 </style> 

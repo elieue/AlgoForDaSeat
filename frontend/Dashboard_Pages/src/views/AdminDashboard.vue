@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-dashboard">
+    <div class="admin-dashboard">
     <div class="dashboard-header">
       <h1 class="page-title">Admin Dashboard</h1>
       <p class="page-desc">Overview of school enrollment applications and slot allocation status.</p>
@@ -17,7 +17,7 @@
       <h3 class="error-title">Error Loading Dashboard</h3>
       <p class="error-message">{{ dashboardStore.error }}</p>
       <button @click="refreshData" class="btn">Retry</button>
-    </div>
+      </div>
 
     <!-- Dashboard Content -->
     <div v-else class="dashboard-content">

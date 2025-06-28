@@ -107,4 +107,33 @@ function formatDate(ts) {
   opacity: 1;
   transform: translateY(0);
 }
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+thead th, tbody td {
+  text-align: left;
+  padding: 12px 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+thead th {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: #888;
+  background: #faf9f6;
+}
+tbody td {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+}
+/* Example column widths, adjust as needed */
+thead th.lrn, tbody td.lrn { width: 16%; }
+thead th.name, tbody td.name { width: 20%; }
+thead th.gpa, tbody td.gpa { width: 10%; }
+thead th.exam, tbody td.exam { width: 10%; }
+thead th.date, tbody td.date { width: 16%; }
+thead th.status, tbody td.status { width: 14%; }
+thead th.actions, tbody td.actions { width: 14%; }
 </style> 

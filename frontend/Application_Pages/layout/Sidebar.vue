@@ -3,8 +3,10 @@
     <!-- Floating circular icons when collapsed -->
     <div class="floating-icons">
       <!-- Logo icon -->
-      <div class="floating-icon logo-icon" :class="{ active: isActive('/dashboard') }">
-        <img :src="logo" alt="AlgoForDaSeat Logo" class="icon" />
+      <div class="floating-icon logo-icon">
+        <router-link to="/">
+          <img :src="logo" alt="AlgoForDaSeat Logo" class="icon" />
+        </router-link>
       </div>
       
       <!-- Dashboard icon -->
@@ -58,21 +60,14 @@
           <img :src="rankingsIcon" alt="Rankings" class="icon" />
         </router-link>
       </div>
-      
-      <!-- Logout icon -->
-      <div class="floating-icon logout-icon">
-        <button class="icon-link logout-btn">
-          <img :src="logoutIcon" alt="Logout" class="icon" />
-        </button>
-      </div>
     </div>
 
     <!-- Expanded sidebar content -->
     <div class="sidebar-content">
-      <div class="logo-section">
+      <router-link to="/" class="logo-section" style="text-decoration: none; color: inherit;">
         <img :src="logo" alt="AlgoForDaSeat Logo" class="logo" />
         <span class="brand">AlgoForDaSeat</span>
-      </div>
+      </router-link>
       <div class="sidebar-section">
         <ul class="nav-list">
           <li :class="{ active: isActive('/dashboard') }">
@@ -124,12 +119,6 @@
           </li>
         </ul>
       </div>
-      <div class="logout-section">
-        <button class="logout-btn">
-          <img :src="logoutIcon" alt="Logout" class="icon" />
-          <span>Logout</span>
-        </button>
-      </div>
     </div>
   </nav>
 </template>
@@ -146,7 +135,6 @@ import waitlistedIcon from '../../Assets/waitlisted-applications-logo.svg';
 import approvedIcon from '../../Assets/approved-applications-logo.svg';
 import rejectedIcon from '../../Assets/rejected-applications-logo.svg';
 import rankingsIcon from '../../Assets/application-ranking-logo.svg';
-import logoutIcon from '../../Assets/log-out-icon.svg';
 </script>
 
 <style scoped>
@@ -258,19 +246,6 @@ import logoutIcon from '../../Assets/log-out-icon.svg';
   border: none;
   cursor: pointer;
   padding: 0;
-}
-
-/* Logout icon special styling */
-.logout-icon {
-  margin-top: auto;
-  margin-bottom: 12px;
-}
-
-.logout-btn .icon {
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  display: block;
 }
 
 /* Sidebar content (hidden when collapsed) */
@@ -386,35 +361,5 @@ li:not(.active) .nav-link:hover, li:not(.active) .nav-link:focus {
   color: #FFB84C;
   box-shadow: none;
   transform: none;
-}
-
-.logout-section {
-  padding: 0 24px 24px 24px;
-  margin-top: auto;
-}
-
-.logout-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  background: none;
-  border: none;
-  color: #888;
-  font-size: 1.02rem;
-  font-weight: 500;
-  padding: 12px 0;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: background 0.2s, color 0.2s;
-}
-
-.logout-btn:hover, .logout-btn:focus {
-  background: #f5f5f5;
-  color: #f44336;
-}
-
-.logout-btn span {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 500;
 }
 </style> 

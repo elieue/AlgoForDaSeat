@@ -85,7 +85,7 @@ async function seed() {
           `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${faker.helpers.arrayElement(emailProviders)}`,
           lrn,
           Number((85 + Math.random() * 10).toFixed(2)),
-          faker.number.int({ min: 80, max: 99 }),
+          faker.number.int({ min: 60, max: 100 }),
           fullAddress,
           Number((3 + Math.random() * 10).toFixed(2)),
           faker.helpers.arrayElement(['Male', 'Female']),

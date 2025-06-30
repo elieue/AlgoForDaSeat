@@ -89,24 +89,96 @@ AlgoForDaSeat/
 
 ## **🚀 Setup Instructions**
 
+## 🚀 Installation & Setup
+
+### 1. Clone the Repository
+
+```powershell
 git clone https://github.com/elieue/AlgoForDaSeat.git
-
-### **1️⃣ Backend Setup**
-
-```sh
-cd backend
-npm install
-npm start
-node server.js
-node db.js
-node ford_fulkerson.js
-node counting_sort.js
+cd AlgoForDaSeat
 ```
 
-### **1️⃣ Frontend Setup**
+### 2. Database Setup
 
-```sh
-cd frontend
+1. **Install PostgreSQL** if not already installed
+2. **Create a new database** named `algofordaseat` (note: different from previous versions)
+3. **Update database configuration** in `backend/db.js` with your credentials:
+
+```javascript
+const pool = new Pool({
+  user: 'your_username',        // Your PostgreSQL username
+  host: 'localhost',
+  database: 'algofordaseat',        // Database name
+  password: 'your_password',    // Your PostgreSQL password
+  port: 5432,                   // Default PostgreSQL port
+});
+```
+
+### 3. Backend Setup
+
+```powershell
+# Navigate to backend directory
+cd backend
+
+# Install dependencies
 npm install
+
+# Initialize database tables
+node db.js
+
+# Seed the database with sample data
+node seed_rooms.js
+
+# Start the backend server
+node server.js
+```
+
+The backend server will start on `http://localhost:3000`
+
+### 4. Frontend Setup
+
+Open a new terminal window:
+
+```powershell
+# Navigate to frontend directory
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start the development server
 npm run dev
+```
+
+The frontend will be available at `http://localhost:5173`
+
+## 🏃‍♂️ Running the Application
+
+### Development Mode
+
+1. **Start Backend Server:**
+   ```powershell
+   cd backend
+   node server.js
+   ```
+
+2. **Start Frontend Development Server:**
+   ```powershell
+   cd frontend
+   npm run dev
+   ```
+
+3. **Access the Application:**
+   - **Frontend**: `http://localhost:5173`
+   - **Backend API**: `http://localhost:3000`
+
+### Production Build
+
+```powershell
+# Build frontend for production
+cd frontend
+npm run build
+
+# Preview production build
+npm run preview
 ```
